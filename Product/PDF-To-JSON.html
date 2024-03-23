@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>PDF to JSON</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.9.359/pdf.min.js"></script>
+  </head>
+  <body>
+    <h1>PDF to JSON</h1>
+    <form id="pdfForm" enctype="multipart/form-data">
+      <input type="file" name="pdfFile" id="pdfFile">
+      <input type="button" value="Upload" onclick="uploadFile()">
+    </form>
+    <hr>
+    <h2>Preview:</h2>
+    <pre id="jsonPreview"></pre>
+
+    <script>
+      function uploadFile() {
+        const form = document.getElementById('pdfForm');
+        const fileInput = document.getElementById('pdfFile');
+        const jsonPreview = document.getElementById('jsonPreview');
+
+        const reader = new FileReader();
+        reader.onload = function() {
+          const pdfData = new Uint8Array(reader.result);
+          pdfjsLib.getDocument(pdfData).promise.then(function(pdf) {
+            const numPages = pdf.numPages;
+            let jsonData = [];
+
+            for (let i = 1; i <= numPages; i++) {
+              pdf.getPage(i).then(function(page) {
+                page.getTextContent().then(function(textContent) {
+                  jsonData.push(textContent.items.map(item => item.str));
+                  if (i === numPages) {
+                    jsonPreview.textContent = JSON.stringify(jsonData, null, 2);
+                  }
+                });
+              });
+            }
+          }, function(error) {
+            alert('Error loading PDF file: ' + error.message);
+          });
+        }
+
+        const file = fileInput.files[0];
+        if (!/\.pdf$/i.test(file.name)) {
+          alert('Please select a valid PDF file.');
+          return;
+        }
+        reader.readAsArrayBuffer(file);
+      }
+    </script>
+  </body>
+</html>

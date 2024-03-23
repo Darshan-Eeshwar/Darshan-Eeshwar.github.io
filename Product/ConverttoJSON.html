@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>File Upload and Convert to PDF</title>
+  </head>
+  <body>
+    <input type="file" id="fileInput">
+    <button onclick="convertToPdf()">Convert to PDF</button>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.2/pdfmake.min.js"></script>
+    <script>
+      function convertToPdf() {
+        // Get the uploaded file
+        var fileInput = document.getElementById("fileInput");
+        var file = fileInput.files[0];
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function() {
+          var dataUrl = reader.result;
+
+          // Convert the file to PDF
+          var pdfDefinition = { content: [{ text: "File Content" }, { text: dataUrl }] };
+          pdfMake.createPdf(pdfDefinition).download("file.pdf");
+        };
+      }
+    </script>
+  </body>
+</html>
