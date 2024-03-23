@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/style.css" />
+    <title>Creative Agency</title>
+  </head>
+  <body>
+    <header>
+      <div class="logo">Starwalt Agency</div>
+      <div class="toggle"></div>
+      <div class="navigation">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="work.html">Work</a></li>
+          <li><a href="https://starwalt.github.io/blog">Blog</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        
+          <li><a href="https://www.linkedin.com/company/starwalt">Carrers</a></li>
+          <li><a href="https://dimple-enterprises.creator-spring.com/">Products</a></li>
+          <li><a href="https://github.com/sandysanthosh">Meet our Team</a></li>
+          <li><a href="/Paymentlink.jpg">Online Payment</a></li>
+          <li><a  href="https://starwalt.github.io/training/Training.html" />Starwalt Academy</a></li>
+
+        </ul>
+        <div class="social-bar">
+          <ul>
+            <li>
+              <a href="https://www.facebook.com/Starwalt07">
+                <img src="images/facebook.png" target="_blank" alt="" />
+              </a>
+            </li>
+            <li>
+              <a href="https://twitter.com/starwaltcompany">
+                <img src="images/twitter.png" target="_blank" alt="" />
+              </a>
+            </li>
+            <li>
+              <a href="https://www.instagram.com/starwaltcompany/">
+                <img src="images/instagram.png" target="_blank" alt="" />
+              </a>
+            </li>
+          </ul>
+          <a href="starwaltcompany@gmail.com" class="email-icon">
+            <img src="images/email.png" alt="" />
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <section>
+      <div class="title">
+        <h1>Contact us</h1>
+        <p>
+          
+Dimple Enterprises Company provides services like Online Websites Development, Software Development, Digital Marketing, Promoting Client Business.
+
+        </p>
+      </div>
+      <div class="contact">
+        <div class="contact-form">
+       
+       
+           <form id="contactForm" action="https://formspree.io/f/mayrwbpj" method="POST">
+            <div class="row">
+              <div class="input50">
+                <input type="text" name="first_name" placeholder="First Name" required />
+              </div>
+              <div class="input50">
+                <input type="text" name="last_name" placeholder="Last Name" required />
+              </div>
+            </div>
+            <div class="row">
+              <div class="input50">
+                <input type="email" name="email" placeholder="Email" required />
+              </div>
+              <div class="input50">
+                <input type="text" name="subject" placeholder="Subject" required />
+              </div>
+            </div>
+            <div class="row">
+              <div class="input100">
+                <textarea name="message" placeholder="Message" required></textarea>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input100">
+                <input type="submit" value="Send" />
+              </div>
+            </div>
+          </form>
+
+          
+        </div>
+
+        <div class="contact-info">
+          <div class="info-box">
+            <img src="images/address.png" class="contact-icon" alt="" />
+            <div class="details">
+              <h4>Address</h4>
+              <P>L/57, First Floor, Phase-4 Sathuvachari,Vellore-632009, Tamil Nadu, INDIA </P>
+            </div>
+          </div>
+          <div class="info-box">
+            <img src="images/email.png" class="contact-icon" alt="" />
+            <div class="details">
+              <h4>Email</h4>
+              <a href="mailto:starwaltcompany@gmail.com">starwaltcompany@gmail.com</a>
+             
+            </div>
+          </div>
+          <div class="info-box">
+            <img src="images/call.png" class="contact-icon" alt="" />
+            <div class="details">
+              <h4>Call</h4>
+                <a href="tel:+918668098213">+91 86680 98213</a></br>
+                <a href="tel:+919360374027">+91 93603 74027</a></br>
+                <a href="tel:+919597562273">+91 95975 62273</a></br>
+                <a href="https://calendly.com/starwaltcompany">Quick Appoinment!</a> 
+            </div>
+    
+       
+          
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+<!--Start of Tawk.to Script-->
+
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/6206897ab9e4e21181bea7ad/1frkoi2g3';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+    
+<!--End of Tawk.to Script-->
+
+
+    <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Get the form element
+    const form = document.getElementById('contactForm');
+
+    if (form) {
+      // Add a listener for form submission
+      form.addEventListener('submit', function(event) {
+        // Prevent the default form submission behavior
+        event.preventDefault();
+
+        // Perform form submission using Fetch API or XMLHttpRequest
+        fetch(form.action, {
+          method: form.method,
+          body: new FormData(form)
+        })
+        .then(response => {
+          if (response.ok) {
+            // Form submission successful
+            // Redirect to the main page after submission
+            window.location.href = 'https://starwalt.github.io/index.html';
+
+            // Show a "Thank You" message or popup here
+            alert('Thank you for your submission!');
+          } else {
+            // Handle errors if the form submission fails
+            alert('Oops! Something went wrong. Please try again.');
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+      });
+    }
+  });
+</script>
+
+    
+
+    <script src="js/script.js"></script>
+  </body>
+</html>

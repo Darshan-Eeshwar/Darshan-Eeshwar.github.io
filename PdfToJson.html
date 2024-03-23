@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>PDF to JSON</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf2json/2.6.2/pdf2json.min.js"></script>
+  </head>
+  <body>
+    <canvas id="pdfCanvas"></canvas>
+    <button onclick="convertPdfToJson()">Convert to JSON</button>
+    <script>
+      var canvas = document.getElementById("pdfCanvas");
+      var context = canvas.getContext("2d");
+
+      function convertPdfToJson() {
+        // Load the PDF
+        pdfjsLib.getDocument('path/to/pdf/file.pdf').promise.then(function(pdf) {
+          // Get the first page of the PDF
+          pdf.getPage(1).then(function(page) {
+            // Set the scale of the canvas
+            var scale = 1.5;
+            var viewport = page.getViewport({ scale: scale });
+
+            // Set the size of the canvas to fit the PDF page
+            canvas.width = viewport.width;
+            canvas.height = viewport.height;
+
+            // Render the PDF page into the canvas
+            var renderContext = {
+              canvasContext: context,
+              viewport: viewport
+            };
+            page.render(renderContext);
+
+            // Convert the PDF to JSON
+            var dataUrl = canvas.toDataURL();
+            var pdf2json = new PDF2JSON();
+            pdf2json.parseBlob(dataURLtoBlob(dataUrl));
+            pdf2json.on('pdfparsed', function(data) {
+              // Output the JSON to the console
+              console.log(JSON.stringify(data));
+            });
+          });
+        });
+      }
+
+      // Helper function to convert data URL to blob
+      function dataURLtoBlob(dataURL) {
+        var parts = dataURL.split(';base64,');
+        var contentType = parts[0].split(':')[1];
+        var raw = window.atob(parts[1]);
+        var rawLength = raw.length;
+        var uInt8Array = new Uint8Array(rawLength);
+        for (var i = 0; i < rawLength; ++i) {
+          uInt8Array[i] = raw.charCodeAt(i);
+        }
+        return new Blob([uInt8Array], { type: contentType });
+      }
+    </script>
+  </body>
+</html>
