@@ -1,0 +1,5 @@
+Contact: mailto:starwaltcompany@gmail.com
+Expires: 2027-09-17T23:59:59Z
+Preferred-Languages: en, ta
+Canonical: https://darshan-eeshwar.github.io/.well-known/security.txt
+Policy: https://darshan-eeshwar.github.io/payment-safety.html
