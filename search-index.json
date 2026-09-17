@@ -173,5 +173,12 @@
     "keywords": "maintenance checklist calendar recurring security backup content performance",
     "url": "maintenance-planner.html",
     "type": "Tool"
+  },
+  {
+    "title": "Business tools hub",
+    "description": "Browse, search, filter and favourite free website planning, SEO, brand, maintenance and decision tools.",
+    "keywords": "tools hub directory favourites planners calculators business",
+    "url": "tools.html",
+    "type": "Directory"
   }
 ]
