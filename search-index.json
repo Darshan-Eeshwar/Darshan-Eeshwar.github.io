@@ -166,5 +166,12 @@
     "keywords": "recommend package starter growth commerce quiz website solution",
     "url": "solution-finder.html",
     "type": "Tool"
+  },
+  {
+    "title": "Website maintenance planner",
+    "description": "Track weekly, monthly, quarterly and annual website tasks and download a 12-month reminder calendar.",
+    "keywords": "maintenance checklist calendar recurring security backup content performance",
+    "url": "maintenance-planner.html",
+    "type": "Tool"
   }
 ]
