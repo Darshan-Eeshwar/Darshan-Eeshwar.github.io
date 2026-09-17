@@ -152,5 +152,12 @@
     "keywords": "brand colours palette contrast wcag accessibility css logo tagline",
     "url": "brand-planner.html",
     "type": "Tool"
+  },
+  {
+    "title": "SEO and social snippet planner",
+    "description": "Preview page titles, descriptions, URLs and social cards, then download metadata and an SEO brief.",
+    "keywords": "seo meta title description google snippet social open graph twitter canonical",
+    "url": "seo-snippet-planner.html",
+    "type": "Tool"
   }
 ]
