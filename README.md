@@ -1,53 +1,12 @@
-#### List of Products:
+# Dimple Enterprises Website
 
-```
+Official static website for Dimple Enterprises, Vellore.
 
-Custom website design and development
-E-commerce website development
-Content management system (CMS) development and integration
-Mobile app development (for iOS and Android)
-Search engine optimization (SEO) services
-Web hosting and domain name registration
-Web application development
-Social media integration
-Responsive web design
-Website maintenance and support
-User experience (UX) design
-Website security services
-Payment gateway integration
-Chatbot development
-Artificial intelligence (AI) integration.
+## Included
+- Responsive business homepage
+- Website, e-commerce, SEO, marketing, maintenance and automation services
+- Enquiry form, phone, email and WhatsApp contact paths
+- Local-business structured data and canonical metadata
+- Privacy policy, sitemap and robots file
 
-```
-
-
-```
-
-Online Appoinment
-Online Payment
-Customer Experience
-Business Hours
-Location- Google Map
-Photo 
-Videos
-News Update
-
-website is accessible 24/7
-
-search in any device
-
-mobile 
-laptop 
-Tablet
-
-Digital Marketing:
-
-Facebook
-Instragram
-
-Brand Awarness
-
-Generating Leads
-Increase Sales
-
-```
+Built with semantic HTML, modern CSS and lightweight vanilla JavaScript. No build step is required.
