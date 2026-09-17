@@ -1,0 +1,114 @@
+[
+  {
+    "title": "Website development",
+    "description": "Responsive business websites, landing pages and portfolios designed to generate enquiries.",
+    "keywords": "web design development mobile responsive business",
+    "url": "index.html#services",
+    "type": "Service"
+  },
+  {
+    "title": "E-commerce and product catalogues",
+    "description": "Customer-friendly catalogues, commerce planning and payment integration guidance.",
+    "keywords": "shop ecommerce products payments online store",
+    "url": "index.html#services",
+    "type": "Service"
+  },
+  {
+    "title": "Local SEO and visibility",
+    "description": "Search-friendly foundations and local visibility guidance for businesses.",
+    "keywords": "seo google business profile local search vellore",
+    "url": "index.html#services",
+    "type": "Service"
+  },
+  {
+    "title": "Digital marketing",
+    "description": "Campaign planning, social content and lead-generation support.",
+    "keywords": "marketing campaigns social leads growth",
+    "url": "index.html#services",
+    "type": "Service"
+  },
+  {
+    "title": "Website maintenance",
+    "description": "Content updates, performance checks and ongoing technical support.",
+    "keywords": "support updates care maintenance performance",
+    "url": "index.html#services",
+    "type": "Service"
+  },
+  {
+    "title": "Business automation",
+    "description": "Forms and workflows that reduce repetitive work and improve follow-up.",
+    "keywords": "automation forms workflow integration",
+    "url": "index.html#services",
+    "type": "Service"
+  },
+  {
+    "title": "Website pricing and packages",
+    "description": "Starter, growth and commerce package information with an interactive estimator.",
+    "keywords": "price cost budget packages quote estimate",
+    "url": "index.html#pricing",
+    "type": "Planning"
+  },
+  {
+    "title": "Request a detailed quote",
+    "description": "Submit goals, requirements, budget and timeline for a tailored project response.",
+    "keywords": "quote proposal project request",
+    "url": "quote.html",
+    "type": "Tool"
+  },
+  {
+    "title": "Request a consultation time",
+    "description": "Prepare a WhatsApp request for a preferred consultation date and time.",
+    "keywords": "appointment meeting call whatsapp consultation",
+    "url": "consultation.html",
+    "type": "Tool"
+  },
+  {
+    "title": "Project brief builder",
+    "description": "Organise goals, features, timeline and budget, then download a project brief.",
+    "keywords": "requirements scope brief download planning",
+    "url": "project-brief.html",
+    "type": "Tool"
+  },
+  {
+    "title": "Website cost in India",
+    "description": "A practical guide to scope, indicative pricing and recurring website costs.",
+    "keywords": "india website price cost budget hosting domain",
+    "url": "guides/website-cost-india.html",
+    "type": "Guide"
+  },
+  {
+    "title": "Business website launch checklist",
+    "description": "Prepare content, access, testing, security and post-launch maintenance.",
+    "keywords": "launch checklist content testing security",
+    "url": "guides/website-launch-checklist.html",
+    "type": "Guide"
+  },
+  {
+    "title": "Local SEO guide for Vellore businesses",
+    "description": "Practical foundations for improving nearby customer discovery.",
+    "keywords": "vellore local seo google reviews search",
+    "url": "guides/local-seo-vellore.html",
+    "type": "Guide"
+  },
+  {
+    "title": "Privacy policy",
+    "description": "Information about how the website handles enquiries and visitor information.",
+    "keywords": "privacy data forms information",
+    "url": "privacypolicy.html",
+    "type": "Policy"
+  },
+  {
+    "title": "General service terms",
+    "description": "General information about quotes, scope, payments, materials, timelines and results.",
+    "keywords": "terms payment revisions ownership scope",
+    "url": "terms.html",
+    "type": "Policy"
+  },
+  {
+    "title": "Frequently asked questions",
+    "description": "Answers about timelines, mobile design, maintenance, hosting and redesigns.",
+    "keywords": "faq questions hosting mobile maintenance timeline",
+    "url": "index.html#faq",
+    "type": "Help"
+  }
+]
