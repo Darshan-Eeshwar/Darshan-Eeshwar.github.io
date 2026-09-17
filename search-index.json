@@ -180,5 +180,12 @@
     "keywords": "tools hub directory favourites planners calculators business",
     "url": "tools.html",
     "type": "Directory"
+  },
+  {
+    "title": "Homepage copy planner",
+    "description": "Draft and preview a clear headline, audience, promise, services, proof, CTA and FAQ ideas, then download Markdown.",
+    "keywords": "copywriting homepage headline tagline services content cta faq",
+    "url": "homepage-copy-planner.html",
+    "type": "Tool"
   }
 ]
