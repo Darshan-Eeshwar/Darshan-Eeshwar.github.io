@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://darshan-eeshwar.github.io/sitemap.xml
