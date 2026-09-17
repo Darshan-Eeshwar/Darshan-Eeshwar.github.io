@@ -138,5 +138,12 @@
     "keywords": "vendor proposal quote compare cost scope hosting ownership",
     "url": "quote-comparison.html",
     "type": "Tool"
+  },
+  {
+    "title": "Project timeline planner",
+    "description": "Estimate working-day milestones for starter, business and commerce website projects and download calendar files.",
+    "keywords": "timeline schedule milestones dates calendar ics launch project",
+    "url": "timeline-planner.html",
+    "type": "Tool"
   }
 ]
