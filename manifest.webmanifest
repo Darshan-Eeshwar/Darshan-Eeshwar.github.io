@@ -26,6 +26,11 @@
       "name": "View services",
       "short_name": "Services",
       "url": "/index.html#services"
+    },
+    {
+      "name": "தமிழ் பக்கம்",
+      "short_name": "தமிழ்",
+      "url": "/ta.html"
     }
   ]
 }
