@@ -124,5 +124,19 @@
     "keywords": "tamil தமிழ் இணையதளம் வெல்லூர் வணிகம் சேவை விலை தொடர்பு",
     "url": "ta.html",
     "type": "தமிழ்"
+  },
+  {
+    "title": "Payment verification and safety",
+    "description": "Verify beneficiary details, recognise payment red flags and use official contact channels before paying.",
+    "keywords": "payment safety fraud scam otp verify bank qr",
+    "url": "payment-safety.html",
+    "type": "Safety"
+  },
+  {
+    "title": "Website quote comparison tool",
+    "description": "Compare two website proposals across scope, ownership, support, security and transparent costs.",
+    "keywords": "vendor proposal quote compare cost scope hosting ownership",
+    "url": "quote-comparison.html",
+    "type": "Tool"
   }
 ]
