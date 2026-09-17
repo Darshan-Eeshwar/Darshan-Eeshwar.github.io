@@ -187,5 +187,12 @@
     "keywords": "copywriting homepage headline tagline services content cta faq",
     "url": "homepage-copy-planner.html",
     "type": "Tool"
+  },
+  {
+    "title": "Website image optimizer",
+    "description": "Resize and compress images to JPEG or WebP locally in the browser with before-and-after size comparison.",
+    "keywords": "image compress resize webp jpeg photo optimization performance",
+    "url": "image-optimizer.html",
+    "type": "Tool"
   }
 ]
