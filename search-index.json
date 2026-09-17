@@ -110,5 +110,12 @@
     "keywords": "faq questions hosting mobile maintenance timeline",
     "url": "index.html#faq",
     "type": "Help"
+  },
+  {
+    "title": "Digital readiness assessment",
+    "description": "Answer 12 questions about website, visibility, trust and lead handling, then download an improvement report.",
+    "keywords": "assessment score audit readiness website seo trust leads report",
+    "url": "readiness-assessment.html",
+    "type": "Tool"
   }
 ]
