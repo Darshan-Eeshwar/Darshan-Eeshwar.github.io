@@ -145,5 +145,12 @@
     "keywords": "timeline schedule milestones dates calendar ics launch project",
     "url": "timeline-planner.html",
     "type": "Tool"
+  },
+  {
+    "title": "Accessible brand palette planner",
+    "description": "Preview a business name and tagline, check WCAG colour contrast, and download brand notes and CSS variables.",
+    "keywords": "brand colours palette contrast wcag accessibility css logo tagline",
+    "url": "brand-planner.html",
+    "type": "Tool"
   }
 ]
