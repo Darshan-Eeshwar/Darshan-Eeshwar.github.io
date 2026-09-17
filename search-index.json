@@ -159,5 +159,12 @@
     "keywords": "seo meta title description google snippet social open graph twitter canonical",
     "url": "seo-snippet-planner.html",
     "type": "Tool"
+  },
+  {
+    "title": "Website solution finder",
+    "description": "Answer transparent business-goal, content, commerce and budget questions to find a suitable starting package.",
+    "keywords": "recommend package starter growth commerce quiz website solution",
+    "url": "solution-finder.html",
+    "type": "Tool"
   }
 ]
