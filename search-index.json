@@ -159,5 +159,12 @@
     "keywords": "seo meta title description google snippet social open graph twitter canonical",
     "url": "seo-snippet-planner.html",
     "type": "Tool"
+  },
+  {
+    "title": "Customer support centre",
+    "description": "Submit a categorized support request with reproduction steps, optional browser diagnostics and a client reference.",
+    "keywords": "support help bug issue problem project update diagnostics",
+    "url": "support.html",
+    "type": "Support"
   }
 ]
