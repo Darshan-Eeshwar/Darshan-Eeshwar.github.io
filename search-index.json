@@ -194,5 +194,12 @@
     "keywords": "image compress resize webp jpeg photo optimization performance",
     "url": "image-optimizer.html",
     "type": "Tool"
+  },
+  {
+    "title": "Social content calendar",
+    "description": "Plan seven social media posts with platform, theme, caption, CTA, readiness tracking and CSV export.",
+    "keywords": "social media content calendar instagram facebook linkedin posts captions csv",
+    "url": "social-calendar.html",
+    "type": "Tool"
   }
 ]
