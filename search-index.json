@@ -201,5 +201,12 @@
     "keywords": "social media content calendar instagram facebook linkedin posts captions csv",
     "url": "social-calendar.html",
     "type": "Tool"
+  },
+  {
+    "title": "Image alt-text planner",
+    "description": "Preview local images, draft context-aware alternative text, validate common issues and export implementation CSV.",
+    "keywords": "alt text accessibility images decorative wcag csv",
+    "url": "alt-text-planner.html",
+    "type": "Tool"
   }
 ]
