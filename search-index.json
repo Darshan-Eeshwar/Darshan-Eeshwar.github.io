@@ -243,5 +243,12 @@
     "keywords": "xml sitemap generator builder validator seo url priority changefreq lastmod",
     "url": "xml-sitemap-builder.html",
     "type": "Tool"
+  },
+  {
+    "title": "FAQ schema generator",
+    "description": "Create validated FAQPage JSON-LD with flexible question-and-answer rows.",
+    "keywords": "faq schema json ld structured data question answer generator seo",
+    "url": "faq-schema-generator.html",
+    "type": "Tool"
   }
 ]
