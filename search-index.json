@@ -222,5 +222,12 @@
     "keywords": "seo meta title description canonical robots open graph twitter card analyzer",
     "url": "seo-meta-analyzer.html",
     "type": "Tool"
+  },
+  {
+    "title": "Local Business schema generator",
+    "description": "Create JSON-LD structured data for business details, address, contact information and hours.",
+    "keywords": "local business schema json ld structured data seo generator opening hours address",
+    "url": "local-business-schema.html",
+    "type": "Tool"
   }
 ]
