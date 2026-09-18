@@ -208,5 +208,12 @@
     "keywords": "alt text accessibility images decorative wcag csv",
     "url": "alt-text-planner.html",
     "type": "Tool"
+  },
+  {
+    "title": "HTML accessibility checker",
+    "description": "Inspect local HTML for document language, title, headings, image alt attributes, form labels, accessible names and duplicate IDs.",
+    "keywords": "html accessibility audit checker wcag alt labels headings links buttons",
+    "url": "html-accessibility-checker.html",
+    "type": "Tool"
   }
 ]
