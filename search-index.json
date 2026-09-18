@@ -229,5 +229,12 @@
     "keywords": "local business schema json ld structured data seo generator opening hours address",
     "url": "local-business-schema.html",
     "type": "Tool"
+  },
+  {
+    "title": "robots.txt generator and checker",
+    "description": "Create search-engine crawl rules with presets, sitemap support and safety warnings.",
+    "keywords": "robots txt seo crawler crawl control disallow allow sitemap generator checker",
+    "url": "robots-txt-generator.html",
+    "type": "Tool"
   }
 ]
