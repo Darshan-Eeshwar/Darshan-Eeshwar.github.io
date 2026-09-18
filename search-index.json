@@ -215,5 +215,12 @@
     "keywords": "html accessibility audit checker wcag alt labels headings links buttons",
     "url": "html-accessibility-checker.html",
     "type": "Tool"
+  },
+  {
+    "title": "SEO meta-tag analyzer",
+    "description": "Analyze HTML metadata locally and generate recommended search and social tags.",
+    "keywords": "seo meta title description canonical robots open graph twitter card analyzer",
+    "url": "seo-meta-analyzer.html",
+    "type": "Tool"
   }
 ]
