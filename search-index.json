@@ -236,5 +236,12 @@
     "keywords": "robots txt seo crawler crawl control disallow allow sitemap generator checker",
     "url": "robots-txt-generator.html",
     "type": "Tool"
+  },
+  {
+    "title": "XML sitemap builder and validator",
+    "description": "Validate page URLs, change frequencies, priorities and dates, then download sitemap.xml.",
+    "keywords": "xml sitemap generator builder validator seo url priority changefreq lastmod",
+    "url": "xml-sitemap-builder.html",
+    "type": "Tool"
   }
 ]
