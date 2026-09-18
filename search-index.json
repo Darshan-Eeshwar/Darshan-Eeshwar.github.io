@@ -250,5 +250,12 @@
     "keywords": "faq schema json ld structured data question answer generator seo",
     "url": "faq-schema-generator.html",
     "type": "Tool"
+  },
+  {
+    "title": "UTM campaign link builder",
+    "description": "Create validated tracking URLs for advertising, email, social media and WhatsApp campaigns.",
+    "keywords": "utm url campaign link builder tracking google ads facebook instagram email whatsapp",
+    "url": "utm-link-builder.html",
+    "type": "Tool"
   }
 ]
