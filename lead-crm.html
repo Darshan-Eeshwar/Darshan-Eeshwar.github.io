@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b1739"><link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/site.css">
+<title>Lead CRM Tracker | Dimple Enterprises</title>
+<meta name="description" content="A private browser-based CRM to track enquiries, follow-ups, lead value and sales pipeline.">
+<link rel="canonical" href="https://darshan-eeshwar.github.io/lead-crm.html">
+<style>
+.crm-stats,.crm-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin:1.25rem 0}
+.crm-stat,.crm-panel{border:1px solid #dfe5ee;border-radius:14px;padding:1rem;background:#fff}
+.crm-stat strong{display:block;font-size:1.6rem;margin-top:.25rem}
+.crm-form{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:.8rem}
+.crm-form label{display:grid;gap:.35rem}.crm-form .wide{grid-column:1/-1}
+.crm-form input,.crm-form select,.crm-form textarea,.crm-controls input,.crm-controls select{width:100%;box-sizing:border-box;padding:.75rem;border:1px solid #c8d0dc;border-radius:9px}
+.crm-controls{display:grid;grid-template-columns:2fr 1fr auto;gap:.75rem;margin:1.25rem 0}
+.crm-table{overflow:auto}.crm-table table{width:100%;border-collapse:collapse;min-width:760px}.crm-table th,.crm-table td{text-align:left;padding:.75rem;border-bottom:1px solid #e5e9ef}
+.crm-table button{margin-right:.35rem}.crm-empty{text-align:center;padding:2rem;color:#64748b}
+.crm-actions{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem}
+.crm-note{font-size:.9rem;color:#64748b}
+@media(max-width:650px){.crm-controls{grid-template-columns:1fr}}
+</style>
+</head>
+<body><main class="page-shell"><article class="page-card">
+<a class="home-link" href="tools.html">← Back to tools</a>
+<span class="eyebrow">Sales operations</span><h1>Lead CRM tracker</h1>
+<p>Keep enquiries organised, remember follow-ups and understand your pipeline. Data stays in this browser unless you export it.</p>
+<div class="crm-stats">
+<div class="crm-stat"><span>Total leads</span><strong id="total">0</strong></div>
+<div class="crm-stat"><span>Open pipeline</span><strong id="pipeline">₹0</strong></div>
+<div class="crm-stat"><span>Follow-ups due</span><strong id="due">0</strong></div>
+<div class="crm-stat"><span>Won value</span><strong id="won">₹0</strong></div>
+</div>
+<section class="crm-panel"><h2>Add or update lead</h2>
+<form id="lead-form" class="crm-form">
+<input id="lead-id" type="hidden">
+<label>Name<input id="lead-name" required maxlength="80"></label>
+<label>Business<input id="lead-business" maxlength="100"></label>
+<label>Phone<input id="lead-phone" type="tel" maxlength="30"></label>
+<label>Source<select id="lead-source"><option>Website</option><option>WhatsApp</option><option>Referral</option><option>Social media</option><option>Direct</option><option>Other</option></select></label>
+<label>Stage<select id="lead-stage"><option>New</option><option>Contacted</option><option>Qualified</option><option>Proposal</option><option>Won</option><option>Lost</option></select></label>
+<label>Estimated value (₹)<input id="lead-value" type="number" min="0" step="1" value="0"></label>
+<label>Next follow-up<input id="lead-followup" type="date"></label>
+<label class="wide">Notes<textarea id="lead-notes" rows="3" maxlength="500"></textarea></label>
+<div class="crm-actions wide"><button class="btn primary" type="submit">Save lead</button><button class="btn secondary" type="button" id="reset-form">Clear form</button></div>
+</form></section>
+<div class="crm-controls"><input id="lead-search" type="search" placeholder="Search name, business, phone or notes…"><select id="stage-filter"><option value="">All stages</option><option>New</option><option>Contacted</option><option>Qualified</option><option>Proposal</option><option>Won</option><option>Lost</option></select><button class="btn secondary" id="export-csv" type="button">Export CSV</button></div>
+<div class="crm-table"><table><thead><tr><th>Lead</th><th>Stage</th><th>Value</th><th>Follow-up</th><th>Source</th><th>Actions</th></tr></thead><tbody id="lead-rows"></tbody></table><p id="empty" class="crm-empty">No leads yet. Add your first enquiry above.</p></div>
+<p class="crm-note">Privacy: this tool uses your browser's local storage. Clearing browser data can remove saved leads, so export a CSV backup regularly. Avoid storing sensitive personal information.</p>
+</article></main>
+<script>
+(()=>{
+const KEY='de-leads-v1', $=id=>document.getElementById(id);
+let leads=[]; try{leads=JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){leads=[]}
+const money=n=>'₹'+Number(n||0).toLocaleString('en-IN');
+const esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function save(){localStorage.setItem(KEY,JSON.stringify(leads));render()}
+function reset(){ $('lead-form').reset();$('lead-id').value='';$('lead-value').value=0 }
+function render(){
+ const q=$('lead-search').value.toLowerCase(), stage=$('stage-filter').value, today=new Date().toISOString().slice(0,10);
+ const shown=leads.filter(x=>(!stage||x.stage===stage)&&[x.name,x.business,x.phone,x.notes].join(' ').toLowerCase().includes(q));
+ $('lead-rows').innerHTML=shown.map(x=>'<tr><td><b>'+esc(x.name)+'</b><br><small>'+esc(x.business||x.phone)+'</small></td><td>'+esc(x.stage)+'</td><td>'+money(x.value)+'</td><td>'+esc(x.followup||'—')+'</td><td>'+esc(x.source)+'</td><td><button type="button" data-edit="'+x.id+'">Edit</button><button type="button" data-delete="'+x.id+'">Delete</button></td></tr>').join('');
+ $('empty').hidden=shown.length>0;$('total').textContent=leads.length;
+ $('pipeline').textContent=money(leads.filter(x=>!['Won','Lost'].includes(x.stage)).reduce((a,x)=>a+Number(x.value||0),0));
+ $('won').textContent=money(leads.filter(x=>x.stage==='Won').reduce((a,x)=>a+Number(x.value||0),0));
+ $('due').textContent=leads.filter(x=>x.followup&&x.followup<=today&&!['Won','Lost'].includes(x.stage)).length;
+}
+$('lead-form').addEventListener('submit',e=>{e.preventDefault();const id=$('lead-id').value||String(Date.now());const item={id,name:$('lead-name').value.trim(),business:$('lead-business').value.trim(),phone:$('lead-phone').value.trim(),source:$('lead-source').value,stage:$('lead-stage').value,value:Number($('lead-value').value||0),followup:$('lead-followup').value,notes:$('lead-notes').value.trim(),updated:new Date().toISOString()};const i=leads.findIndex(x=>x.id===id);if(i>=0)leads[i]=item;else leads.unshift(item);save();reset()});
+$('reset-form').onclick=reset;$('lead-search').oninput=render;$('stage-filter').onchange=render;
+$('lead-rows').onclick=e=>{const edit=e.target.dataset.edit, del=e.target.dataset.delete;if(edit){const x=leads.find(v=>v.id===edit);if(!x)return;Object.entries({name:x.name,business:x.business,phone:x.phone,source:x.source,stage:x.stage,value:x.value,followup:x.followup,notes:x.notes}).forEach(([k,v])=>$('lead-'+k).value=v||'');$('lead-id').value=x.id;scrollTo({top:0,behavior:'smooth'})}if(del&&confirm('Delete this lead?')){leads=leads.filter(x=>x.id!==del);save()}};
+$('export-csv').onclick=()=>{const rows=[['Name','Business','Phone','Source','Stage','Value','Follow-up','Notes'],...leads.map(x=>[x.name,x.business,x.phone,x.source,x.stage,x.value,x.followup,x.notes])];const csv=rows.map(r=>r.map(v=>'"'+String(v??'').replaceAll('"','""')+'"').join(',')).join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='dimple-enterprises-leads.csv';a.click();URL.revokeObjectURL(a.href)};
+render();
+})();
+</script></body></html>
