@@ -257,5 +257,12 @@
     "keywords": "utm url campaign link builder tracking google ads facebook instagram email whatsapp",
     "url": "utm-link-builder.html",
     "type": "Tool"
+  },
+  {
+    "title": "WhatsApp enquiry-link builder",
+    "description": "Create validated prefilled WhatsApp links for quotes, consultations and customer support.",
+    "keywords": "whatsapp wa me link message enquiry quote consultation support generator",
+    "url": "whatsapp-link-builder.html",
+    "type": "Tool"
   }
 ]
