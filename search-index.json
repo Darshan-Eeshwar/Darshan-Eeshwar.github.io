@@ -1,4 +1,11 @@
-[{"title":"Business dashboards","description":"Executive, sales, marketing, finance and supply chain dashboards with CSV imports and reporting.","keywords":"revenue profit campaigns inventory orders metrics KPI dashboard","url":"business-dashboards.html","type":"Tool"},
+[
+  {
+    "title": "Business dashboards",
+    "description": "Executive, sales, marketing, finance and supply chain dashboards with CSV imports and reporting.",
+    "keywords": "revenue profit campaigns inventory orders metrics KPI dashboard",
+    "url": "business-dashboards.html",
+    "type": "Tool"
+  },
   {
     "title": "Website development",
     "description": "Responsive business websites, landing pages and portfolios designed to generate enquiries.",
@@ -263,6 +270,13 @@
     "description": "Create validated prefilled WhatsApp links for quotes, consultations and customer support.",
     "keywords": "whatsapp wa me link message enquiry quote consultation support generator",
     "url": "whatsapp-link-builder.html",
+    "type": "Tool"
+  },
+  {
+    "title": "Digital business-card and vCard generator",
+    "description": "Create a digital contact preview and downloadable VCF contact file.",
+    "keywords": "digital business card vcard vcf contact phone email download generator",
+    "url": "digital-business-card.html",
     "type": "Tool"
   }
 ]
