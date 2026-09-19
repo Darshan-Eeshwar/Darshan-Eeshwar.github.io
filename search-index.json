@@ -292,5 +292,12 @@
     "keywords": "email signature html business contact logo branding generator",
     "url": "email-signature-builder.html",
     "type": "Tool"
+  },
+  {
+    "title": "Website-copy readability analyzer",
+    "description": "Measure reading time, sentence length, long sentences and keyword usage privately.",
+    "keywords": "website copy readability word count reading time sentence keyword density analyzer",
+    "url": "copy-readability-analyzer.html",
+    "type": "Tool"
   }
 ]
