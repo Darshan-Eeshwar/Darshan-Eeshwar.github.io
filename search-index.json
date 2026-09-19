@@ -278,5 +278,12 @@
     "keywords": "consultation meeting appointment scheduler calendar ics google customer",
     "url": "consultation-scheduler.html",
     "type": "Tool"
+  },
+  {
+    "title": "Website project-brief builder",
+    "description": "Define website goals, pages, features, content readiness, budget and timeline.",
+    "keywords": "website project brief requirements scope pages features budget timeline quote",
+    "url": "website-project-brief.html",
+    "type": "Tool"
   }
 ]
