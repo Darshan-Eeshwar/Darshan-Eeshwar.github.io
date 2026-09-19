@@ -271,5 +271,12 @@
     "keywords": "digital business card vcard vcf contact phone email download generator",
     "url": "digital-business-card.html",
     "type": "Tool"
+  },
+  {
+    "title": "Consultation scheduler",
+    "description": "Create customer meeting summaries, Google Calendar links and downloadable ICS invitations.",
+    "keywords": "consultation meeting appointment scheduler calendar ics google customer",
+    "url": "consultation-scheduler.html",
+    "type": "Tool"
   }
 ]
