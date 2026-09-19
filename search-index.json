@@ -264,5 +264,12 @@
     "keywords": "whatsapp wa me link message enquiry quote consultation support generator",
     "url": "whatsapp-link-builder.html",
     "type": "Tool"
+  },
+  {
+    "title": "Digital business-card and vCard generator",
+    "description": "Create a digital contact preview and downloadable VCF contact file.",
+    "keywords": "digital business card vcard vcf contact phone email download generator",
+    "url": "digital-business-card.html",
+    "type": "Tool"
   }
 ]
