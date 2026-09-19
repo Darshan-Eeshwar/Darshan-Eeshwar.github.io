@@ -306,5 +306,12 @@
     "keywords": "redirect map 301 302 url migration apache nginx netlify csv validator",
     "url": "redirect-map-builder.html",
     "type": "Tool"
+  },
+  {
+    "title": "Private HTML link analyzer",
+    "description": "Inspect local HTML links, classify targets and export structural link issues as CSV.",
+    "keywords": "html link analyzer internal external broken empty href fragment csv",
+    "url": "html-link-analyzer.html",
+    "type": "Tool"
   }
 ]
