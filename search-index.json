@@ -299,5 +299,12 @@
     "keywords": "website copy readability word count reading time sentence keyword density analyzer",
     "url": "copy-readability-analyzer.html",
     "type": "Tool"
+  },
+  {
+    "title": "Website redirect-map builder and validator",
+    "description": "Detect duplicate sources, loops, chains and invalid URLs, then export server redirect rules.",
+    "keywords": "redirect map 301 302 url migration apache nginx netlify csv validator",
+    "url": "redirect-map-builder.html",
+    "type": "Tool"
   }
 ]
