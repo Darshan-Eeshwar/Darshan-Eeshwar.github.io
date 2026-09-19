@@ -280,10 +280,10 @@
     "type": "Tool"
   },
   {
-    "title": "Website project-brief builder",
-    "description": "Define website goals, pages, features, content readiness, budget and timeline.",
-    "keywords": "website project brief requirements scope pages features budget timeline quote",
-    "url": "website-project-brief.html",
+    "title": "Customer review-request builder",
+    "description": "Create personalised, ethical review messages for Google, Facebook, Justdial or a custom page.",
+    "keywords": "customer review testimonial request google facebook justdial whatsapp message",
+    "url": "review-request-builder.html",
     "type": "Tool"
   }
 ]
