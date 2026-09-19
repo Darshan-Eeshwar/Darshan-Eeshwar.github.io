@@ -285,5 +285,12 @@
     "keywords": "customer review testimonial request google facebook justdial whatsapp message",
     "url": "review-request-builder.html",
     "type": "Tool"
+  },
+  {
+    "title": "Professional email-signature builder",
+    "description": "Create branded HTML and plain-text email signatures with live preview.",
+    "keywords": "email signature html business contact logo branding generator",
+    "url": "email-signature-builder.html",
+    "type": "Tool"
   }
 ]
