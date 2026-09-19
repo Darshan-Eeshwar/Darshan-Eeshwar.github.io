@@ -278,5 +278,12 @@
     "keywords": "consultation meeting appointment scheduler calendar ics google customer",
     "url": "consultation-scheduler.html",
     "type": "Tool"
+  },
+  {
+    "title": "Customer review-request builder",
+    "description": "Create personalised, ethical review messages for Google, Facebook, Justdial or a custom page.",
+    "keywords": "customer review testimonial request google facebook justdial whatsapp message",
+    "url": "review-request-builder.html",
+    "type": "Tool"
   }
 ]
