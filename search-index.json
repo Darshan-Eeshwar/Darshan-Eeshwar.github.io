@@ -313,5 +313,12 @@
     "keywords": "pricing table package plans features recommended html generator",
     "url": "pricing-table-builder.html",
     "type": "Tool"
+  },
+  {
+    "title": "Customer testimonial showcase builder",
+    "description": "Create branded testimonial cards with ratings, customer attribution and optional source links.",
+    "keywords": "testimonial customer review showcase cards rating html builder",
+    "url": "testimonial-showcase-builder.html",
+    "type": "Tool"
   }
 ]
