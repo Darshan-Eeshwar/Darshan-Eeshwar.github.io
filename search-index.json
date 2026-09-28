@@ -306,5 +306,12 @@
     "keywords": "redirect map 301 302 url migration apache nginx netlify csv validator",
     "url": "redirect-map-builder.html",
     "type": "Tool"
+  },
+  {
+    "title": "Pricing-package table builder",
+    "description": "Create three branded service packages with feature lists, recommended plan and calls to action.",
+    "keywords": "pricing table package plans features recommended html generator",
+    "url": "pricing-table-builder.html",
+    "type": "Tool"
   }
 ]
