@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b1739"><link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="css/site.css">
+<title>Search Console Opportunity Planner | Dimple Enterprises</title>
+<meta name="description" content="Analyze a Google Search Console CSV locally and find query and page opportunities to review.">
+<link rel="canonical" href="https://darshan-eeshwar.github.io/search-console-opportunity-planner.html">
+<style>
+.sc-controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:1rem;margin:1.25rem 0}.sc-controls label{display:grid;gap:.4rem;font-weight:700}.sc-controls input,.sc-input{box-sizing:border-box;width:100%;padding:.75rem;border:1px solid #c8d0dc;border-radius:9px;font:inherit}.sc-input{min-height:190px;resize:vertical}.sc-actions{display:flex;gap:.7rem;flex-wrap:wrap;margin:1rem 0}.sc-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.8rem;margin:1.25rem 0}.sc-stat,.sc-panel{border:1px solid #dfe5ee;border-radius:14px;padding:1rem;background:#fff}.sc-stat strong{display:block;font-size:1.45rem;margin-top:.25rem}.sc-results{overflow:auto}.sc-results table{width:100%;border-collapse:collapse;min-width:850px}.sc-results th,.sc-results td{text-align:left;padding:.7rem;border-bottom:1px solid #e5e9ef;vertical-align:top}.sc-results td:first-child{max-width:260px;overflow-wrap:anywhere}.sc-badge{display:inline-block;padding:.25rem .5rem;border-radius:999px;background:#eef2ff;color:#2546ca;font-size:.85rem;font-weight:700}.sc-status{padding:.85rem;border-radius:10px;background:#eef2ff}.sc-note{font-size:.9rem;color:#526079}@media(max-width:650px){.sc-actions>*{width:100%}}
+</style></head>
+<body><main class="page-shell"><article class="page-card">
+<a class="home-link" href="tools.html">← Back to tools</a><span class="eyebrow">Search performance</span>
+<h1>Search Console opportunity planner</h1><p>Import the Queries or Pages CSV you export from Google Search Console. Find rows worth reviewing and download a prioritized action list.</p>
+<section class="sc-panel" aria-labelledby="import-title"><h2 id="import-title">Add a Search Console export</h2>
+<p class="sc-note">In Search Console, open Performance, select Queries or Pages, then export CSV. You can also paste the CSV below. The file is read in this browser and is not uploaded.</p>
+<label for="sc-file">Choose a CSV or TSV file</label><input id="sc-file" type="file" accept=".csv,.tsv,text/csv,text/tab-separated-values">
+<label for="sc-data">Or paste exported data</label><textarea id="sc-data" class="sc-input" spellcheck="false" placeholder="Top queries,Clicks,Impressions,CTR,Position&#10;example search,8,420,1.9%,7.4"></textarea>
+<div class="sc-actions"><button class="btn primary" type="button" id="sc-analyze">Analyze locally</button><button class="btn secondary" type="button" id="sc-sample">Load sample data</button><button class="btn secondary" type="button" id="sc-clear">Clear</button></div></section>
+<div class="sc-controls"><label>Minimum impressions for opportunities<input id="sc-min-impressions" type="number" min="0" value="100"></label><label>CTR review threshold (%)<input id="sc-target-ctr" type="number" min="0" max="100" step="0.1" value="2"></label></div>
+<p id="sc-status" class="sc-status" role="status" aria-live="polite">Add an export to see opportunities. No Google account connection is required.</p>
+<div class="sc-stats" aria-live="polite"><div class="sc-stat"><span>Rows analyzed</span><strong id="sc-rows">0</strong></div><div class="sc-stat"><span>Total clicks</span><strong id="sc-clicks">0</strong></div><div class="sc-stat"><span>Total impressions</span><strong id="sc-impressions">0</strong></div><div class="sc-stat"><span>Average CTR</span><strong id="sc-ctr">—</strong></div></div>
+<section class="sc-panel"><h2>Prioritized opportunities</h2><p class="sc-note">A planning heuristic: low CTR is flagged using your chosen threshold; positions 8–20 are highlighted as ranking candidates. Review the actual query, landing page, and search intent before making changes. This is not a Google score or a promise of ranking gains.</p>
+<div class="sc-actions"><button class="btn secondary" id="sc-export" type="button" disabled>Download opportunities CSV</button></div>
+<div class="sc-results"><table><thead><tr><th>Query or page</th><th>Clicks</th><th>Impressions</th><th>CTR</th><th>Position</th><th>Review area</th><th>Suggested next step</th></tr></thead><tbody id="sc-results"><tr><td colspan="7">No data analyzed yet.</td></tr></tbody></table></div></section>
+<p class="sc-note">Privacy: analysis happens on this page in your browser. The tool does not request access to Search Console or send your data anywhere. Search Console metrics can vary by date range, filters, and report type.</p>
+</article></main>
+<script>
+(()=> {
+const $=id=>document.getElementById(id);let opportunities=[];
+const number=value=>{const raw=String(value??'').replace(/,/g,'').trim();if(!raw)return NaN;const n=Number(raw);return Number.isFinite(n)?n:NaN};
+function parseDelimited(text){const first=(text.split(/\r?\n/,1)[0]||'');const delimiter=first.includes('\t')&&!first.includes(',')?'\t':',';const rows=[];let row=[],cell='',quoted=false;
+for(let i=0;i<text.length;i++){const ch=text[i];if(quoted){if(ch==='"'&&text[i+1]==='"'){cell+='"';i++}else if(ch==='"')quoted=false;else cell+=ch}else if(ch==='"'&&cell==='')quoted=true;else if(ch===delimiter){row.push(cell);cell=''}else if(ch==='\n'){row.push(cell.replace(/\r$/,''));rows.push(row);row=[];cell=''}else cell+=ch}if(cell!==''||row.length){row.push(cell.replace(/\r$/,''));rows.push(row)}return rows}
+function escapeHtml(value){return String(value).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]))}
+function csvCell(value){return '"'+String(value??'').replace(/"/g,'""')+'"'}
+function analyze(text){const rows=parseDelimited(text),normalize=s=>String(s||'').toLowerCase().replace(/^\ufeff/,'').replace(/[^a-z]/g,'');
+const headerIndex=rows.findIndex(row=>{const h=row.map(normalize);return h.includes('clicks')&&h.includes('impressions')&&h.includes('position')&&(h.includes('ctr')||h.includes('clickthroughrate'))});
+if(headerIndex<0)throw new Error('Could not find a header row with Clicks, Impressions and Position. Export Queries or Pages from Search Console and try again.');
+const headers=rows[headerIndex].map(normalize),find=(...names)=>headers.findIndex(h=>names.includes(h)),nameIndex=headers.findIndex(h=>/^(top)?(queries|pages|query|page|searchterm|url)$/.test(h));
+const clicksIndex=find('clicks'),impressionsIndex=find('impressions'),ctrIndex=find('ctr','clickthroughrate'),positionIndex=find('position');
+const min=Math.max(0,number($('sc-min-impressions').value)||0),threshold=Math.max(0,Math.min(100,number($('sc-target-ctr').value)||0))/100,valid=[];
+for(const cells of rows.slice(headerIndex+1)){const name=(cells[nameIndex>=0?nameIndex:0]||'').trim(),clicks=number(cells[clicksIndex]),impressions=number(cells[impressionsIndex]),position=number(cells[positionIndex]);if(!name||![clicks,impressions,position].every(Number.isFinite))continue;
+const raw=String(cells[ctrIndex]??'').trim(),ctrNumber=number(raw.replace('%','')),ctr=raw?(raw.includes('%')?ctrNumber/100:(ctrNumber<=1?ctrNumber:ctrNumber/100)):(impressions?clicks/impressions:0);
+let area='Monitor',action='Review the search term and the page it leads to.',score=0;
+if(impressions>=min&&ctr<threshold){area='CTR review';action='Check that the page title and description clearly match this search and accurately describe the page.';score=impressions*(threshold-ctr)}
+if(impressions>=min&&position>=8&&position<=20){if(area==='Monitor'){area='Ranking review';action='Check page relevance, content coverage, internal links, and indexing for this query or page.'}score=Math.max(score,impressions*(21-position)/20)}
+if(area==='Monitor'&&clicks>0&&position<8){area='Protect visibility';action='Keep the page accurate and useful; review related pages for internal-link opportunities.'}
+valid.push({name,clicks,impressions,ctr,position,area,action,score})}
+if(!valid.length)throw new Error('No valid data rows found. Check that the export includes query or page names and numeric metrics.');
+valid.sort((a,b)=>b.score-a.score||b.impressions-a.impressions);opportunities=valid;
+const total=key=>valid.reduce((sum,item)=>sum+item[key],0),clicks=total('clicks'),impressions=total('impressions');
+$('sc-rows').textContent=valid.length.toLocaleString();$('sc-clicks').textContent=Math.round(clicks).toLocaleString();$('sc-impressions').textContent=Math.round(impressions).toLocaleString();$('sc-ctr').textContent=(impressions?clicks/impressions*100:0).toFixed(1)+'%';
+$('sc-results').innerHTML=valid.slice(0,200).map(x=>'<tr><td>'+escapeHtml(x.name)+'</td><td>'+Math.round(x.clicks).toLocaleString()+'</td><td>'+Math.round(x.impressions).toLocaleString()+'</td><td>'+(x.ctr*100).toFixed(2)+'%</td><td>'+x.position.toFixed(1)+'</td><td><span class="sc-badge">'+escapeHtml(x.area)+'</span></td><td>'+escapeHtml(x.action)+'</td></tr>').join('');
+$('sc-export').disabled=false;$('sc-status').textContent='Analyzed '+valid.length.toLocaleString()+' rows. Showing the top '+Math.min(valid.length,200)+' by opportunity priority.'}
+$('sc-analyze').addEventListener('click',()=>{try{analyze($('sc-data').value);$('sc-status').className='sc-status'}catch(error){$('sc-status').textContent=error.message;$('sc-status').className='sc-status'}})
+$('sc-file').addEventListener('change',async event=>{const file=event.target.files?.[0];if(!file)return;if(file.size>5242880){$('sc-status').textContent='Please choose a file smaller than 5 MB.';event.target.value='';return}try{$('sc-data').value=await file.text();$('sc-status').textContent='File loaded locally. Select Analyze locally to review it.'}catch{$('sc-status').textContent='Could not read this file. Try a UTF-8 CSV export.'}})
+$('sc-sample').addEventListener('click',()=>{$('sc-data').value='Top queries,Clicks,Impressions,CTR,Position\nwebsite design vellore,8,420,1.9%,7.4\nbusiness website cost,4,380,1.1%,12.2\nwebsite maintenance,12,160,7.5%,4.1';$('sc-status').textContent='Sample data loaded. Select Analyze locally to see how the planner works.'})
+$('sc-clear').addEventListener('click',()=>{$('sc-data').value='';$('sc-file').value='';opportunities=[];for(const [id,value] of [['sc-rows','0'],['sc-clicks','0'],['sc-impressions','0'],['sc-ctr','—']])$(id).textContent=value;$('sc-results').innerHTML='<tr><td colspan="7">No data analyzed yet.</td></tr>';$('sc-export').disabled=true;$('sc-status').textContent='Cleared. Your data was not saved.'})
+$('sc-export').addEventListener('click',()=>{if(!opportunities.length)return;const head=['Query or page','Clicks','Impressions','CTR','Position','Review area','Suggested next step'],rows=[head,...opportunities.map(x=>[x.name,x.clicks,x.impressions,(x.ctr*100).toFixed(2)+'%',x.position.toFixed(1),x.area,x.action])],csv=rows.map(row=>row.map(csvCell).join(',')).join('\r\n'),link=document.createElement('a');link.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));link.download='search-console-opportunities.csv';link.click();URL.revokeObjectURL(link.href)})
+})();
+</script></body></html>
