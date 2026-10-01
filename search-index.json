@@ -1,5 +1,12 @@
 [
   {
+    "title": "Website project proposal builder",
+    "description": "Create a branded proposal draft with client details, scope, milestones and itemized pricing.",
+    "keywords": "proposal builder website project scope deliverables timeline price quote client",
+    "url": "project-proposal-builder.html",
+    "type": "Tool"
+  },
+  {
     "title": "Search Console opportunity planner",
     "description": "Analyze a Google Search Console Queries or Pages CSV locally and prioritize CTR and ranking reviews.",
     "keywords": "google search console GSC queries pages clicks impressions CTR position SEO search performance",
