@@ -27,7 +27,7 @@
 <script>
 (()=> {
 const $=id=>document.getElementById(id);let opportunities=[];
-const number=value=>{const n=Number(String(value??'').replace(/,/g,'').trim());return Number.isFinite(n)?n:NaN};
+const number=value=>{const raw=String(value??'').replace(/,/g,'').trim();if(!raw)return NaN;const n=Number(raw);return Number.isFinite(n)?n:NaN};
 function parseDelimited(text){const first=(text.split(/\r?\n/,1)[0]||'');const delimiter=first.includes('\t')&&!first.includes(',')?'\t':',';const rows=[];let row=[],cell='',quoted=false;
 for(let i=0;i<text.length;i++){const ch=text[i];if(quoted){if(ch==='"'&&text[i+1]==='"'){cell+='"';i++}else if(ch==='"')quoted=false;else cell+=ch}else if(ch==='"'&&cell==='')quoted=true;else if(ch===delimiter){row.push(cell);cell=''}else if(ch==='\n'){row.push(cell.replace(/\r$/,''));rows.push(row);row=[];cell=''}else cell+=ch}if(cell!==''||row.length){row.push(cell.replace(/\r$/,''));rows.push(row)}return rows}
 function escapeHtml(value){return String(value).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]))}
