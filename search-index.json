@@ -341,5 +341,12 @@
     "keywords": "testimonial customer review showcase cards rating html builder",
     "url": "testimonial-showcase-builder.html",
     "type": "Tool"
+  },
+  {
+    "title": "Website content inventory planner",
+    "description": "Track website pages, content owners, priorities, statuses and due dates in your browser.",
+    "keywords": "website content inventory pages owner status priority due date csv planner",
+    "url": "content-inventory-planner.html",
+    "type": "Tool"
   }
 ]
