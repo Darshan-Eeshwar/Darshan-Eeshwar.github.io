@@ -348,5 +348,12 @@
     "keywords": "website content inventory pages owner status priority due date csv planner",
     "url": "content-inventory-planner.html",
     "type": "Tool"
+  },
+  {
+    "title": "SEO keyword-to-page map builder",
+    "description": "Map target keywords and search intent to website pages and flag conflicting URL assignments.",
+    "keywords": "seo keyword map search intent target page url cannibalization content planning csv",
+    "url": "seo-keyword-map-builder.html",
+    "type": "Tool"
   }
 ]
