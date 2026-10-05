@@ -163,10 +163,11 @@
     if(!record){setStatus("Check the counts: qualified leads and sales cannot exceed enquiries, and enquiries cannot exceed visits.");return;}
     var existed=records.some(function(item){return item.month===record.month;});
     records=records.filter(function(item){return item.month!==record.month;});records.push(record);
-    saveRecords();renderHistory();renderResults(record);
-    setStatus((existed?"Updated":"Saved")+" the "+record.month+" snapshot in this browser.");
+    var persisted=saveRecords();renderHistory();renderResults(record);
+    if(persisted){setStatus((existed?"Updated":"Saved")+" the "+record.month+" snapshot in this browser.");}
+    else{setStatus("Snapshot calculated, but browser storage is unavailable. Export CSV before leaving.");}
   });
-  document.getElementById("reset-form").addEventListener("click",function(){form.reset();document.getElementById("month").value=new Date().toISOString().slice(0,7);setStatus("Form cleared.");});
+  document.getElementById("reset-form").addEventListener("click",function(){form.reset();document.getElementById("month").value=currentMonth();setStatus("Form cleared.");});
   function csvCell(value){return '"'+String(value==null?"":value).replace(/"/g,'""')+'"';}
   document.getElementById("export").addEventListener("click",function(){
     if(!records.length){setStatus("There are no saved snapshots to export.");return;}
@@ -182,7 +183,8 @@
   document.getElementById("print").addEventListener("click",function(){window.print();});
   readRecords();
   var monthInput=document.getElementById("month");
-  monthInput.value=new Date().toISOString().slice(0,7);
+  function currentMonth(){var d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0");}
+  monthInput.value=currentMonth();
   renderHistory();
   if(records.length){loadForm(sorted()[0]);renderResults(sorted()[0]);}
   else{comparison.textContent="Save a snapshot to see results and comparisons.";}
