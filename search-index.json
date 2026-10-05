@@ -355,5 +355,12 @@
     "keywords": "seo keyword map search intent target page url cannibalization content planning csv",
     "url": "seo-keyword-map-builder.html",
     "type": "Tool"
+  },
+  {
+    "title": "Website funnel tracker",
+    "description": "Track monthly visits, enquiries, qualified leads, sales and marketing spend privately, compare saved months and export CSV.",
+    "keywords": "website conversion funnel tracker visitors visits enquiries leads qualified sales revenue marketing spend cpl conversion rate",
+    "url": "website-conversion-tracker.html",
+    "type": "Tool"
   }
 ]
