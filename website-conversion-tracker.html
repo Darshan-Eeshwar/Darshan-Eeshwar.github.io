@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b1739">
+<title>Website Funnel Tracker | Dimple Enterprises</title>
+<meta name="description" content="Track monthly website visits, enquiries, qualified leads and sales with private conversion metrics and CSV export.">
+<link rel="canonical" href="https://darshan-eeshwar.github.io/website-conversion-tracker.html">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/site.css">
+<style>
+.tracker{max-width:1000px;margin:0 auto}.tracker .intro{margin:1rem 0 1.5rem}.privacy{padding:1rem;border-left:4px solid #2468cc;background:#eef4ff;border-radius:.5rem}.metric-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin:1.25rem 0}.metric{padding:1rem;border:1px solid #dbe3f0;border-radius:.75rem;background:#fff}.metric span,.metric small{display:block;color:#52617a}.metric strong{display:block;font-size:1.5rem;margin:.4rem 0}.input-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1rem}.input-grid label{display:grid;gap:.35rem;font-weight:600}.input-grid input{width:100%;padding:.7rem;border:1px solid #b7c4d8;border-radius:.45rem}.actions{display:flex;flex-wrap:wrap;gap:.6rem;margin:1rem 0}.tracker button{cursor:pointer}.table-wrap{overflow-x:auto}.tracker table{width:100%;border-collapse:collapse}.tracker th,.tracker td{padding:.7rem;border-bottom:1px solid #dbe3f0;text-align:left;white-space:nowrap}.tracker th{background:#f2f5fa}.tracker .note{font-size:.92rem;color:#52617a}.status{min-height:1.5em}.comparison{padding:1rem;background:#f5f8fc;border-radius:.6rem}button.danger{color:#8b1a1a}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}@media print{.home-link,.actions,form,.privacy,.row-action{display:none!important}.tracker{max-width:none}.metric,.comparison{break-inside:avoid}}
+</style>
+</head>
+<body>
+<main class="page-shell tracker">
+<article class="page-card">
+<a class="home-link" href="tools.html">← All business tools</a>
+<span class="eyebrow">Private business tool</span>
+<h1>Website funnel tracker</h1>
+<p class="intro">Record a monthly snapshot of how your website turns visits into enquiries and sales. Compare periods and see where follow-up may need attention.</p>
+<p class="privacy"><strong>Your data stays on this device.</strong> Snapshots are saved in this browser only. Do not enter customer names or contact details. Export a CSV backup before changing devices or clearing browser data.</p>
+<section aria-labelledby="snapshot-title">
+<h2 id="snapshot-title">Monthly snapshot</h2>
+<form id="snapshot-form">
+<div class="input-grid">
+<label for="month">Month<input id="month" name="month" type="month" required></label>
+<label for="visits">Website visits<input id="visits" name="visits" type="number" min="0" step="1" value="0" required></label>
+<label for="enquiries">Enquiries received<input id="enquiries" name="enquiries" type="number" min="0" step="1" value="0" required></label>
+<label for="qualified">Qualified leads<input id="qualified" name="qualified" type="number" min="0" step="1" value="0" required></label>
+<label for="sales">Sales won<input id="sales" name="sales" type="number" min="0" step="1" value="0" required></label>
+<label for="revenue">Sales revenue (₹)<input id="revenue" name="revenue" type="number" min="0" step="0.01" value="0" required></label>
+<label for="spend">Marketing spend (₹)<input id="spend" name="spend" type="number" min="0" step="0.01" value="0" required></label>
+</div>
+<p class="note">Use totals for the month. Enter marketing spend for the same period; results do not account for delivery costs, tax, refunds or other expenses.</p>
+<div class="actions"><button class="btn primary" type="submit">Save monthly snapshot</button><button class="btn secondary" id="reset-form" type="button">Clear form</button></div>
+</form>
+<p id="status" class="status" role="status" aria-live="polite"></p>
+</section>
+<section aria-labelledby="results-title">
+<h2 id="results-title">Snapshot results</h2>
+<div id="metrics" class="metric-grid" aria-live="polite"></div>
+<div id="comparison" class="comparison" aria-live="polite"></div>
+</section>
+<section aria-labelledby="history-title">
+<div class="actions">
+<h2 id="history-title">Saved months</h2>
+<button class="btn secondary" id="export" type="button">Export CSV</button>
+<button class="btn secondary" id="print" type="button">Print summary</button>
+</div>
+<p id="empty" class="note">No snapshots saved yet. Add your first month above.</p>
+<div class="table-wrap"><table id="history" hidden>
+<thead><tr><th>Month</th><th>Visits</th><th>Enquiries</th><th>Qualified</th><th>Sales</th><th>Revenue</th><th>Enquiry rate</th><th>Action</th></tr></thead>
+<tbody id="history-body"></tbody>
+</table></div>
+</section>
+<p class="note">Conversion rates are calculated from the counts you enter. Revenue-to-spend return is a directional measure, not profit or a guaranteed result.</p>
+<div class="actions"><a class="btn secondary" href="index.html">Return to Dimple Enterprises</a></div>
+</article>
+</main>
+<script>
+(function(){
+  "use strict";
+  var KEY="de-website-funnel-snapshots-v1";
+  var form=document.getElementById("snapshot-form");
+  var fields=["month","visits","enquiries","qualified","sales","revenue","spend"];
+  var metrics=document.getElementById("metrics");
+  var comparison=document.getElementById("comparison");
+  var tbody=document.getElementById("history-body");
+  var historyTable=document.getElementById("history");
+  var empty=document.getElementById("empty");
+  var status=document.getElementById("status");
+  var records=[];
+  function setStatus(message){status.textContent=message;}
+  function readRecords(){
+    try{
+      var saved=JSON.parse(localStorage.getItem(KEY)||"[]");
+      records=Array.isArray(saved)?saved.filter(function(r){return r&&typeof r.month==="string";}):[];
+    }catch(e){records=[];setStatus("Browser storage is unavailable. You can still calculate and export data during this visit.");}
+  }
+  function saveRecords(){
+    try{localStorage.setItem(KEY,JSON.stringify(records));return true;}
+    catch(e){setStatus("Could not save in this browser. Export your data as a CSV before leaving.");return false;}
+  }
+  function currency(n){return "₹"+Number(n||0).toLocaleString("en-IN",{maximumFractionDigits:2});}
+  function pct(n,d){return d?((n/d)*100):0;}
+  function metric(label,value,note){
+    var card=document.createElement("article");card.className="metric";
+    var name=document.createElement("span");name.textContent=label;
+    var number=document.createElement("strong");number.textContent=value;
+    var detail=document.createElement("small");detail.textContent=note;
+    card.append(name,number,detail);return card;
+  }
+  function sorted(){return records.slice().sort(function(a,b){return b.month.localeCompare(a.month);});}
+  function renderResults(record){
+    metrics.replaceChildren();
+    var enquiryRate=pct(record.enquiries,record.visits);
+    var qualifyRate=pct(record.qualified,record.enquiries);
+    var closeRate=pct(record.sales,record.enquiries);
+    var avgSale=record.sales?record.revenue/record.sales:0;
+    var cpl=record.enquiries?record.spend/record.enquiries:0;
+    var returnRate=record.spend?((record.revenue-record.spend)/record.spend)*100:null;
+    metrics.append(
+      metric("Visit → enquiry",enquiryRate.toFixed(1)+"%",record.enquiries+" enquiries from "+record.visits+" visits"),
+      metric("Enquiry → qualified",qualifyRate.toFixed(1)+"%",record.qualified+" qualified from "+record.enquiries+" enquiries"),
+      metric("Enquiry → sale",closeRate.toFixed(1)+"%",record.sales+" sales from "+record.enquiries+" enquiries"),
+      metric("Revenue",currency(record.revenue),record.sales+" sales · "+currency(avgSale)+" average sale"),
+      metric("Spend per enquiry",record.enquiries?currency(cpl):"—",record.enquiries?"Marketing spend ÷ enquiries":"No enquiries recorded"),
+      metric("Revenue less marketing spend",returnRate===null?"—":returnRate.toFixed(1)+"%",returnRate===null?"Enter marketing spend to calculate":"Directional view; excludes other costs")
+    );
+    var list=sorted(),idx=list.findIndex(function(r){return r.month===record.month;});
+    var previous=list[idx+1];
+    comparison.replaceChildren();
+    var heading=document.createElement("strong");
+    if(!previous){heading.textContent="Comparison: save an earlier month to compare trends.";}
+    else{
+      heading.textContent="Compared with "+previous.month+": visits "+delta(record.visits,previous.visits)+", enquiries "+delta(record.enquiries,previous.enquiries)+", sales "+delta(record.sales,previous.sales)+", revenue "+delta(record.revenue,previous.revenue)+".";
+    }
+    comparison.append(heading);
+  }
+  function delta(current,prior){
+    var diff=current-prior,sign=diff>0?"+":"";
+    return sign+(Number.isInteger(diff)?diff:currency(diff))+(prior?" ("+(prior?((diff/prior)*100).toFixed(1):"—")+"%)":"");
+  }
+  function safeText(value){return String(value==null?"":value);}
+  function renderHistory(){
+    tbody.replaceChildren();
+    var list=sorted();
+    list.forEach(function(record){
+      var row=document.createElement("tr");
+      [record.month,record.visits,record.enquiries,record.qualified,record.sales,currency(record.revenue),pct(record.enquiries,record.visits).toFixed(1)+"%"].forEach(function(value){
+        var cell=document.createElement("td");cell.textContent=safeText(value);row.appendChild(cell);
+      });
+      var action=document.createElement("td"),button=document.createElement("button");
+      button.type="button";button.className="danger row-action";button.textContent="Delete "+record.month;
+      button.addEventListener("click",function(){
+        records=records.filter(function(item){return item.month!==record.month;});
+        saveRecords();renderHistory();
+        if(records.length){renderResults(sorted()[0]);}else{metrics.replaceChildren();comparison.textContent="Save a snapshot to see results and comparisons.";}
+        setStatus("Removed the "+record.month+" snapshot.");
+      });
+      action.appendChild(button);row.appendChild(action);tbody.appendChild(row);
+    });
+    historyTable.hidden=list.length===0;empty.hidden=list.length>0;
+  }
+  function readForm(){
+    var item={month:document.getElementById("month").value};
+    ["visits","enquiries","qualified","sales","revenue","spend"].forEach(function(key){
+      item[key]=Number(document.getElementById(key).value);
+    });
+    if(!item.month||Object.keys(item).some(function(key){return key!=="month"&&(!Number.isFinite(item[key])||item[key]<0);})){return null;}
+    if(item.qualified>item.enquiries||item.sales>item.enquiries||item.enquiries>item.visits){return null;}
+    return item;
+  }
+  function loadForm(record){
+    fields.forEach(function(key){document.getElementById(key).value=record[key]==null?"":record[key];});
+  }
+  form.addEventListener("submit",function(event){
+    event.preventDefault();
+    if(!form.reportValidity())return;
+    var record=readForm();
+    if(!record){setStatus("Check the counts: qualified leads and sales cannot exceed enquiries, and enquiries cannot exceed visits.");return;}
+    var existed=records.some(function(item){return item.month===record.month;});
+    records=records.filter(function(item){return item.month!==record.month;});records.push(record);
+    var persisted=saveRecords();renderHistory();renderResults(record);
+    if(persisted){setStatus((existed?"Updated":"Saved")+" the "+record.month+" snapshot in this browser.");}
+    else{setStatus("Snapshot calculated, but browser storage is unavailable. Export CSV before leaving.");}
+  });
+  document.getElementById("reset-form").addEventListener("click",function(){form.reset();document.getElementById("month").value=currentMonth();setStatus("Form cleared.");});
+  function csvCell(value){return '"'+String(value==null?"":value).replace(/"/g,'""')+'"';}
+  document.getElementById("export").addEventListener("click",function(){
+    if(!records.length){setStatus("There are no saved snapshots to export.");return;}
+    var columns=["month","visits","enquiries","qualified","sales","revenue","marketingSpend","visitToEnquiryPct","enquiryToQualifiedPct","enquiryToSalePct"];
+    var rows=[columns.join(",")].concat(sorted().map(function(r){return [
+      r.month,r.visits,r.enquiries,r.qualified,r.sales,r.revenue,r.spend,
+      pct(r.enquiries,r.visits).toFixed(2),pct(r.qualified,r.enquiries).toFixed(2),pct(r.sales,r.enquiries).toFixed(2)
+    ].map(csvCell).join(",");}));
+    var blob=new Blob(["\ufeff"+rows.join("\r\n")],{type:"text/csv;charset=utf-8"});
+    var link=document.createElement("a");link.href=URL.createObjectURL(blob);link.download="website-funnel-snapshots.csv";link.click();URL.revokeObjectURL(link.href);
+    setStatus("CSV downloaded. It contains aggregate monthly figures only.");
+  });
+  document.getElementById("print").addEventListener("click",function(){window.print();});
+  readRecords();
+  var monthInput=document.getElementById("month");
+  function currentMonth(){var d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0");}
+  monthInput.value=currentMonth();
+  renderHistory();
+  if(records.length){loadForm(sorted()[0]);renderResults(sorted()[0]);}
+  else{comparison.textContent="Save a snapshot to see results and comparisons.";}
+})();
+</script>
+</body>
+</html>
