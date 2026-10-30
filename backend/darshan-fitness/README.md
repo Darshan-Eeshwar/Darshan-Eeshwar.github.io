@@ -29,3 +29,13 @@ No email password reset exists yet. Use a password manager. The free backend can
 pause after inactivity, so uninterrupted availability is not guaranteed. Regularly
 export a JSON backup in Settings. Unsaved records remain in memory for retry or
 export, with a page-leave warning; there is no offline synchronization queue.
+
+## Extended fitness features
+
+Workout stopwatch (elapsed time, not sensor tracking), strength sets/reps/load,
+protein goals and entries, mood and energy self-ratings, centimetre body
+measurements, daily reflections, daily goal checklist, seven-day summaries,
+per-exercise highest logged loads and daily totals CSV export are included.
+Additional journal fields remain compatible with version-1 records. The timer
+is kept per account in sessionStorage and records a workout only when saved;
+starting a timer does not create a background phone sensor service.
