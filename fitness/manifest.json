@@ -1,0 +1,1 @@
+{"name": "Darshan Eeshwar Fitness", "short_name": "DE Fitness", "start_url": "./", "scope": "./", "display": "standalone", "background_color": "#f5f6f0", "theme_color": "#17382e", "icons": [{"src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any"}]}
