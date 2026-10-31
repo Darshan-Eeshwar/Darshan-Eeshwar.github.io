@@ -39,3 +39,12 @@ per-exercise highest logged loads and daily totals CSV export are included.
 Additional journal fields remain compatible with version-1 records. The timer
 is kept per account in sessionStorage and records a workout only when saved;
 starting a timer does not create a background phone sensor service.
+
+## Training toolkit update
+
+Cloud-saved custom routines support up to 20 exercises each. Routine sessions log
+completed sets and optionally actual duration into the selected journal date.
+Existing journal entries can be edited while keeping their IDs and timestamps.
+Progress includes a monthly activity calendar and journal search by keyword,
+category and inclusive dates. The Train tab includes a visual rest countdown;
+it sends no background notifications and does not run after this page closes.

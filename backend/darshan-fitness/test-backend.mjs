@@ -27,7 +27,7 @@ const a=await req('/api/auth/register',{method:'POST',data:{username:'test_a',pa
 const t=a.body.token;const j={version:1,goals:{steps:8000,water:2500,start:85,target:78,stride:.72},days:{'2026-10-31':{entries:[{id:'water',at:Date.now(),type:'water',value:250,label:'Water'}]}}};
 assert.equal((await req('/api/journal',{method:'PUT',token:t,data:{version:0,data:j}})).status,200);
 assert.deepEqual((await req('/api/journal',{token:t})).body.data,j);
-const expanded=structuredClone(j);expanded.goals={...expanded.goals,protein:110,sleep:8,weeklyWorkouts:4};expanded.days['2026-10-31'].entries.push(
+const expanded=structuredClone(j);expanded.goals={...expanded.goals,protein:110,sleep:8,weeklyWorkouts:4};expanded.routines=[{id:'routine-test',name:'Test routine',exercises:[{name:'Bench press',sets:3,reps:10,load:40}]}];expanded.days['2026-10-31'].entries.push(
 {id:'strength-1',at:Date.now(),type:'strength',value:3,label:'Bench press',reps:10,load:40},
 {id:'protein-1',at:Date.now(),type:'protein',value:25,label:'Protein'},
 {id:'mood-1',at:Date.now(),type:'mood',value:4,label:'Mood'},
@@ -36,7 +36,7 @@ const expanded=structuredClone(j);expanded.goals={...expanded.goals,protein:110,
 {id:'note-1',at:Date.now(),type:'note',value:0,label:'Daily reflection',note:'Felt good after training.'});
 assert.equal((await req('/api/journal',{method:'PUT',token:t,data:{version:1,data:expanded}})).status,200);
 assert.deepEqual((await req('/api/journal',{token:t})).body.data,expanded);
-for(const change of [x=>x.days['2026-10-31'].entries[1].reps=0,x=>x.days['2026-10-31'].entries[1].load=-1,x=>x.days['2026-10-31'].entries[3].value=3.5,x=>x.days['2026-10-31'].entries[6].note='x'.repeat(801),x=>x.goals.weeklyWorkouts=8]){const invalid=structuredClone(expanded);change(invalid);assert.equal((await req('/api/journal',{method:'PUT',token:t,data:{version:2,data:invalid}})).status,400)}
+for(const change of [x=>x.days['2026-10-31'].entries[1].reps=0,x=>x.days['2026-10-31'].entries[1].load=-1,x=>x.days['2026-10-31'].entries[3].value=3.5,x=>x.days['2026-10-31'].entries[6].note='x'.repeat(801),x=>x.goals.weeklyWorkouts=8,x=>x.routines[0].exercises[0].load=501,x=>x.routines.push({...x.routines[0]}),x=>x.routines=[null]]){const invalid=structuredClone(expanded);change(invalid);assert.equal((await req('/api/journal',{method:'PUT',token:t,data:{version:2,data:invalid}})).status,400)}
 
 assert.equal((await req('/api/journal',{method:'PUT',token:t,data:{version:0,data:j}})).status,409);
 const b=await req('/api/auth/register',{method:'POST',data:{username:'test_b',password:'test-only-password-456'}});assert.equal(b.status,200);assert.equal((await req('/api/journal',{token:b.body.token})).body.data,null);
@@ -48,4 +48,4 @@ await req('/api/auth/logout',{method:'POST',token:change.body.token,data:{}});as
 assert.notEqual(tables.df_accounts[0].password_hash,'new-test-password-123');assert.equal(tables.df_accounts[0].password_hash.length,64);
 for(let n=0;n<11;n++)await req('/api/auth/login',{method:'POST',data:{username:'test_missing',password:'incorrect-test-password'}});
 assert.equal((await req('/api/auth/login',{method:'POST',data:{username:'test_missing',password:'incorrect-test-password'}})).status,429);
-console.log('PASS: New feature round-trip, invalid feature rejection, backward compatibility, CORS restriction, username/password registration/login, hashed credentials, session isolation/revocation, per-user persistence, input validation, concurrency conflict, password change and rate limiting. Mock REST only; live smoke test still required.');
+console.log('PASS: Routine and journal round-trip, invalid routine rejection, invalid feature rejection, backward compatibility, CORS restriction, username/password registration/login, hashed credentials, session isolation/revocation, per-user persistence, input validation, concurrency conflict, password change and rate limiting. Mock REST only; live smoke test still required.');
