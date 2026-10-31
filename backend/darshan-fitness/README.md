@@ -48,3 +48,12 @@ Existing journal entries can be edited while keeping their IDs and timestamps.
 Progress includes a monthly activity calendar and journal search by keyword,
 category and inclusive dates. The Train tab includes a visual rest countdown;
 it sends no background notifications and does not run after this page closes.
+
+## Automatic activity companion
+
+The website now displays source-aware activity hearts, active time, recorded or
+imported calories, total burned calories, distance, hourly step bars and monthly
+goal totals. The compiled Android test APK provides foreground-service phone
+steps and a foreground Samsung Health Connect import. See android-setup.md
+for setup, privacy and test-build limits. Device activity is stored separately
+from manual journal data in df_device_activity with denied direct client access.
