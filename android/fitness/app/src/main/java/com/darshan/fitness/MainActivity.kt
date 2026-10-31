@@ -78,7 +78,7 @@ class MainActivity:ComponentActivity(){
   @JavascriptInterface fun startTracking(){runOnUiThread{startSteps()}}
   @JavascriptInterface fun stopTracking(){stopService(Intent(this@MainActivity,StepService::class.java));message("Automatic steps stopped.")}
   @JavascriptInterface fun healthSync(){runOnUiThread{this@MainActivity.healthSync()}}
-  @JavascriptInterface fun status():String {val scope=Store.scope(this@MainActivity);return JSONObject().put("running",StepService.running).put("message",StepService.message).put("records",if(scope!=null)Store.records(this@MainActivity,scope)else JSONObject()).toString()}
+  @JavascriptInterface fun status():String {val scope=Store.scope(this@MainActivity);return JSONObject().put("running",StepService.running).put("message",StepService.message).put("deviceId",Store.deviceId(this@MainActivity)).put("records",if(scope!=null)Store.records(this@MainActivity,scope)else JSONObject()).toString()}
   @JavascriptInterface fun exportData(raw:String){if(raw.length>2000000)return;runOnUiThread{pendingExport=raw;exportLauncher.launch("darshan-fitness-backup.json")}}
  }
  @Deprecated("Deprecated in Java") override fun onBackPressed(){if(web.canGoBack())web.goBack()else super.onBackPressed()}
