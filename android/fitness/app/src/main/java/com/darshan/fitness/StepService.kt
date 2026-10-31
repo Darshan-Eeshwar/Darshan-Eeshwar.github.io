@@ -19,14 +19,15 @@ class StepService:Service(),SensorEventListener {
  private val sync=object:Runnable{override fun run(){executor.execute{message=CloudSync.sync(this@StepService)};handler.postDelayed(this,60000)}}
  override fun onCreate(){super.onCreate();manager=getSystemService(SENSOR_SERVICE) as SensorManager}
  override fun onStartCommand(intent:Intent?,flags:Int,id:Int):Int {
-  if(intent?.action=="STOP"){stopSelf();return START_NOT_STICKY}
+  if(intent?.action=="STOP"){Store.setTrackingEnabled(this,false);stopSelf();return START_NOT_STICKY}
   val account=Store.scope(this);if(account==null){message="Sign in before starting automatic steps.";stopSelf();return START_NOT_STICKY}
+  if(!Store.trackingEnabled(this)){stopSelf();return START_NOT_STICKY}
   if(checkSelfPermission(Manifest.permission.ACTIVITY_RECOGNITION)!=PackageManager.PERMISSION_GRANTED){message="Physical activity permission is required.";stopSelf();return START_NOT_STICKY}
-  val sensor=manager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);if(sensor==null){message="No step counter sensor. Try Health Connect import.";stopSelf();return START_NOT_STICKY}
+  val sensor=manager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);if(sensor==null){message="This phone has no step counter sensor. Manual logs remain available.";stopSelf();return START_NOT_STICKY}
   val nm=getSystemService(NotificationManager::class.java);nm.createNotificationChannel(NotificationChannel("steps","Automatic steps",NotificationManager.IMPORTANCE_LOW))
   val open=PendingIntent.getActivity(this,0,Intent(this,MainActivity::class.java),PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
   val stop=PendingIntent.getService(this,1,Intent(this,StepService::class.java).setAction("STOP"),PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
-  val n=Notification.Builder(this,"steps").setContentTitle("Darshan Fitness is counting steps").setContentText("Phone step sensor active. Tap to view progress.").setSmallIcon(android.R.drawable.ic_menu_compass).setContentIntent(open).setOngoing(true).addAction(Notification.Action.Builder(null,"Stop",stop).build()).build()
+  val n=Notification.Builder(this,"steps").setContentTitle("Darshan Fitness is counting steps").setContentText("Phone step sensor active. Tap to view progress.").setSmallIcon(android.R.drawable.ic_menu_compass).setContentIntent(open).setOngoing(true).addAction(Notification.Action.Builder(null,"Pause",stop).build()).build()
   try{
    if(Build.VERSION.SDK_INT>=34)startForeground(1,n,ServiceInfo.FOREGROUND_SERVICE_TYPE_HEALTH)else startForeground(1,n)
    if(!running||scope!=account){manager.unregisterListener(this);scope=account;raw=-1f;lastDate="";if(!manager.registerListener(this,sensor,SensorManager.SENSOR_DELAY_NORMAL)){message="Sensor could not start.";stopSelf();return START_NOT_STICKY}}
@@ -44,6 +45,6 @@ class StepService:Service(),SensorEventListener {
   raw=current;lastDate=date
  }
  override fun onAccuracyChanged(s:Sensor?,a:Int){}
- override fun onDestroy(){handler.removeCallbacksAndMessages(null);manager.unregisterListener(this);running=false;message="Tracking stopped. Open the app and restart to count more steps.";executor.execute{CloudSync.sync(this)};executor.shutdown();stopForeground(STOP_FOREGROUND_REMOVE);super.onDestroy()}
+ override fun onDestroy(){handler.removeCallbacksAndMessages(null);manager.unregisterListener(this);running=false;message="Tracking is paused or interrupted. Resume in the app to count more steps.";executor.execute{CloudSync.sync(this)};executor.shutdown();stopForeground(STOP_FOREGROUND_REMOVE);super.onDestroy()}
  override fun onBind(i:Intent?) : IBinder?=null
 }

@@ -17,6 +17,8 @@ object Store {
  @Synchronized fun setSession(c:Context,token:String,user:String){require(token.matches(Regex("[a-f0-9]{64}")));val cipher=Cipher.getInstance("AES/GCM/NoPadding").apply{init(Cipher.ENCRYPT_MODE,key())};val raw=JSONObject().put("token",token).put("user",user).toString().toByteArray();prefs(c).edit().putString("auth",Base64.encodeToString(cipher.iv+cipher.doFinal(raw),Base64.NO_WRAP)).commit()}
  @Synchronized fun auth(c:Context):JSONObject? {return try{val raw=Base64.decode(prefs(c).getString("auth",null)?:return null,Base64.NO_WRAP);val cipher=Cipher.getInstance("AES/GCM/NoPadding").apply{init(Cipher.DECRYPT_MODE,key(),GCMParameterSpec(128,raw.copyOfRange(0,12)))};JSONObject(String(cipher.doFinal(raw.copyOfRange(12,raw.size))))}catch(e:Exception){null}}
  @Synchronized fun clearSession(c:Context){prefs(c).edit().remove("auth").commit()}
+ @Synchronized fun trackingEnabled(c:Context):Boolean {val scope=scope(c)?:return true;return prefs(c).getBoolean("tracking_"+scope,true)}
+ @Synchronized fun setTrackingEnabled(c:Context,enabled:Boolean){val scope=scope(c)?:return;prefs(c).edit().putBoolean("tracking_"+scope,enabled).commit()}
  fun scopeFor(user:String):String=MessageDigest.getInstance("SHA-256").digest(user.toByteArray()).joinToString(""){b->"%02x".format(b)}
  fun scope(c:Context):String?=auth(c)?.optString("user")?.let{scopeFor(it)}
  @Synchronized fun deviceId(c:Context):String {val p=prefs(c);val old=p.getString("device",null);if(old!=null)return old;return java.util.UUID.randomUUID().toString().also{p.edit().putString("device",it).commit()}}
