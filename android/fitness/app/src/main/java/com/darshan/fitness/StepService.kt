@@ -20,7 +20,7 @@ class StepService:Service(),SensorEventListener {
  override fun onCreate(){super.onCreate();manager=getSystemService(SENSOR_SERVICE) as SensorManager}
  override fun onStartCommand(intent:Intent?,flags:Int,id:Int):Int {
   if(intent?.action=="STOP"){Store.setTrackingEnabled(this,false);stopSelf();return START_NOT_STICKY}
-  val account=Store.scope(this);if(account==null){message="Sign in before starting automatic steps.";stopSelf();return START_NOT_STICKY}
+  val account=Store.scope(this);if(account==null){message="Open the fitness app once to start private cloud sync.";stopSelf();return START_NOT_STICKY}
   if(!Store.trackingEnabled(this)){stopSelf();return START_NOT_STICKY}
   if(checkSelfPermission(Manifest.permission.ACTIVITY_RECOGNITION)!=PackageManager.PERMISSION_GRANTED){message="Physical activity permission is required.";stopSelf();return START_NOT_STICKY}
   val sensor=manager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);if(sensor==null){message="This phone has no step counter sensor. Manual logs remain available.";stopSelf();return START_NOT_STICKY}

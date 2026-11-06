@@ -20,7 +20,7 @@ export function makeHandler(env,fetcher=fetch){
  }
  async function rate(key,limit=10){if(!await db('rpc/df_rate_limit','POST',{p_key:await sha(key),p_limit:limit,p_window_ms:900000}))fail(429,'Too many attempts. Try again in 15 minutes.')}
  async function body(req){if(!req.headers.get('content-type')?.startsWith('application/json'))fail(415,'Send JSON data.');if(Number(req.headers.get('content-length')||0)>1500000)fail(413,'Journal is too large.');const raw=await req.text();if(raw.length>1500000)fail(413,'Journal is too large. Export a backup and reduce older entries.');try{return JSON.parse(raw)}catch{fail(400,'Invalid JSON.')}}
- async function session(req){const token=req.headers.get('x-fitness-session')||'';if(!/^[a-f0-9]{64}$/.test(token))fail(401,'Please sign in.');const rows=await db('df_sessions?token_hash=eq.'+await sha(token)+'&expires_at=gt.'+Date.now()+'&select=account_id,auth_version');if(!rows?.length)fail(401,'Your session expired. Please sign in again.');const a=(await db('df_accounts?id=eq.'+rows[0].account_id+'&select=id,username,auth_version'))[0];if(!a||a.auth_version!==rows[0].auth_version)fail(401,'Please sign in again.');return a}
+ async function session(req){const token=req.headers.get('x-fitness-session')||'';if(!/^[a-f0-9]{64}$/.test(token))fail(401,'This device needs a new private session.');const rows=await db('df_sessions?token_hash=eq.'+await sha(token)+'&expires_at=gt.'+Date.now()+'&select=account_id,auth_version');if(!rows?.length)fail(401,'This device session expired.');const a=(await db('df_accounts?id=eq.'+rows[0].account_id+'&select=id,username,auth_version'))[0];if(!a||a.auth_version!==rows[0].auth_version)fail(401,'This device needs a new private session.');return a}
  async function newSession(id,version){const token=random();await db('df_sessions','POST',{token_hash:await sha(token),account_id:id,auth_version:version,expires_at:Date.now()+7*86400000});return token}
  return async function handle(req){try{
   if(req.headers.get('origin')!==origin)return new Response('Origin not allowed',{status:403});
@@ -29,6 +29,14 @@ export function makeHandler(env,fetcher=fetch){
   if(!env.url||!env.key)fail(503,'Backend configuration is unavailable.');
   if(path==='/health'&&method==='GET')return reply({ok:true,name:'Darshan Eeshwar Fitness'});
   if(path==='/api/auth/status'&&method==='GET'){try{const a=await session(req);return reply({authenticated:true,username:a.username})}catch(e){if(e.status!==401)throw e;return reply({authenticated:false,hasAccount:true})}}
+  if(path==='/api/auth/device'&&method==='POST'){
+   const b=await body(req),deviceKey=String(b.deviceKey||'');if(!/^[a-f0-9]{64}$/.test(deviceKey))fail(400,'This browser could not create a private device key.');
+   const ip=req.headers.get('x-forwarded-for')?.split(',').at(-1)?.trim()||'unknown';await rate('device-ip:'+ip,60);const deviceKeyHash=await sha(deviceKey);
+   let a=(await db('df_accounts?device_key_hash=eq.'+deviceKeyHash+'&select=id,username,auth_version'))?.[0];
+   if(!a){let current;try{current=await session(req)}catch(e){if(e.status!==401)throw e}if(current){const linked=await db('df_accounts?id=eq.'+current.id+'&device_key_hash=is.null','PATCH',{device_key_hash:deviceKeyHash});a=linked?.[0]||current}}
+   if(!a){const salt=random(),id=crypto.randomUUID(),username='device_'+id.replaceAll('-','').slice(0,23);a={id,username,auth_version:1};try{await db('df_accounts','POST',{...a,password_hash:await hash(random(),salt),salt,device_key_hash:deviceKeyHash,created_at:Date.now()})}catch(e){if(e.status!==409)throw e;a=(await db('df_accounts?device_key_hash=eq.'+deviceKeyHash+'&select=id,username,auth_version'))?.[0];if(!a)throw e}}
+   return reply({authenticated:true,device:true,token:await newSession(a.id,a.auth_version)});
+  }
   if((path==='/api/auth/register'||path==='/api/auth/login')&&method==='POST'){
    const b=await body(req),username=String(b.username||'').trim().toLowerCase(),password=b.password;
    if(!/^[a-z0-9_]{3,30}$/.test(username)||typeof password!=='string'||password.length<12||password.length>128)fail(400,'Use a username of 3–30 letters, numbers or underscores and a password of 12–128 characters.');

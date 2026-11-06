@@ -1,14 +1,16 @@
 # Darshan Eeshwar Fitness
 
 The complete frontend runs at https://darshan-eeshwar.github.io/fitness/.
-Username/password registration and login happen in that page. No ChatGPT sign-in
-or navigation to the old Stride host is required. The private API runs as the
+The page opens directly without a visible login. A random private device key is
+created in the browser and exchanged for short-lived cloud sessions; no shared
+anonymous account is used. The private API runs as the
 Supabase function darshan-fitness-api, with dedicated df_ tables in the existing
 free-plan project. The public frontend includes no server secret.
 
 The backend validates every session and derives account ownership server-side.
-Only hashed session tokens and salted PBKDF2 password hashes are stored. Tokens
-live in sessionStorage in the browser, and expire after seven days. RLS and grants
+Only hashed device keys, hashed session tokens and legacy salted PBKDF2 password
+hashes are stored. Session tokens live in sessionStorage and expire after seven
+days; the private device key silently renews them. RLS and grants
 deny all direct table access to anon and authenticated roles; the Edge Function
 alone accesses the tables using its managed server key. CORS allows the GitHub
 Pages origin. Every journal write uses an optimistic version check. Password
