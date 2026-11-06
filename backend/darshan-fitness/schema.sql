@@ -3,6 +3,7 @@ create table public.df_accounts (
  username text not null unique check (username ~ '^[a-z0-9_]{3,30}$'),
  password_hash text not null check(length(password_hash)=64),
  salt text not null check(length(salt)=64),
+ device_key_hash text unique check(device_key_hash is null or length(device_key_hash)=64),
  created_at bigint not null,
  auth_version integer not null default 1
 );

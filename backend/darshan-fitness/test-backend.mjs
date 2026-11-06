@@ -5,12 +5,12 @@ const fake=async(input,opts)=>{
  const u=new URL(input),path=u.pathname.split('/rest/v1/')[1],data=opts.body?JSON.parse(opts.body):null,table=tables[path];let rows;
  const response=(body,status=200)=>new Response(JSON.stringify(body),{status});
  if(path==='rpc/df_rate_limit'){const n=(counts.get(data.p_key)||0)+1;counts.set(data.p_key,n);return response(n<=data.p_limit)}
- const match=row=>[...u.searchParams].filter(([k])=>!['select','on_conflict'].includes(k)).every(([k,v])=>v.startsWith('eq.')?String(row[k])===v.slice(3):v.startsWith('gt.')?row[k]>Number(v.slice(3)):true);
+ const match=row=>[...u.searchParams].filter(([k])=>!['select','on_conflict'].includes(k)).every(([k,v])=>v.startsWith('eq.')?String(row[k])===v.slice(3):v.startsWith('gt.')?row[k]>Number(v.slice(3)):v==='is.null'?row[k]===undefined||row[k]===null:true);
  const name=path.split('?')[0];const list=tables[name];if(!list)return response({error:'unknown'},400);
  if(opts.method==='GET')return response(list.filter(match).map(x=>({...x})));
  if(opts.method==='POST'){
   if(name==='df_device_activity'){const previous=list.find(x=>x.account_id===data.account_id&&x.device_id===data.device_id&&x.day===data.day&&x.source===data.source);if(previous){Object.assign(previous,structuredClone(data));return response([previous])}}
-  if((name==='df_accounts'&&list.some(x=>x.username===data.username))||(name==='df_journals'&&list.some(x=>x.account_id===data.account_id))){return opts.headers.Prefer?.includes('ignore-duplicates')?response([]):response({code:'23505'},409)}
+  if((name==='df_accounts'&&list.some(x=>x.username===data.username||(data.device_key_hash&&x.device_key_hash===data.device_key_hash)))||(name==='df_journals'&&list.some(x=>x.account_id===data.account_id))){return opts.headers.Prefer?.includes('ignore-duplicates')?response([]):response({code:'23505'},409)}
   list.push(structuredClone(data));return response([data]);
  }
  if(opts.method==='PATCH'){rows=list.filter(match);for(const row of rows)Object.assign(row,structuredClone(data));return response(rows)}
@@ -24,8 +24,12 @@ const req=async(path,{method='GET',data,token,origin='https://darshan-eeshwar.gi
 };
 assert.equal((await req('/health')).status,200);assert.equal((await req('/health',{origin:'https://evil.test'})).status,403);
 assert.equal((await req('/api/journal')).status,401);
+const deviceKey='a'.repeat(64),device=await req('/api/auth/device',{method:'POST',data:{deviceKey}});assert.equal(device.status,200);assert.equal(device.body.token.length,64);assert.equal(device.body.device,true);
+const sameDevice=await req('/api/auth/device',{method:'POST',data:{deviceKey}});assert.equal(sameDevice.status,200);assert.equal(tables.df_accounts.filter(x=>x.device_key_hash).length,1);assert.equal((await req('/api/journal',{token:sameDevice.body.token})).body.data,null);
+const otherDevice=await req('/api/auth/device',{method:'POST',data:{deviceKey:'b'.repeat(64)}});assert.equal(otherDevice.status,200);assert.notEqual(otherDevice.body.token,sameDevice.body.token);assert.equal((await req('/api/auth/device',{method:'POST',data:{deviceKey:'not-a-key'}})).status,400);
 const a=await req('/api/auth/register',{method:'POST',data:{username:'test_a',password:'test-only-password-123'}});assert.equal(a.status,200);assert.equal(a.body.token.length,64);
 const t=a.body.token;
+const linked=await req('/api/auth/device',{method:'POST',token:t,data:{deviceKey:'c'.repeat(64)}});assert.equal(linked.status,200);assert.equal(tables.df_accounts.find(x=>x.username==='test_a').device_key_hash.length,64);assert.notEqual(tables.df_accounts.find(x=>x.username==='test_a').device_key_hash,'c'.repeat(64));assert.equal((await req('/api/journal',{token:linked.body.token})).body.data,null);
 const phone={deviceId:'12345678-1234-1234-1234-123456789012',source:'phone_sensor',date:new Date().toISOString().slice(0,10),steps:500,hours:Array(24).fill(0),updatedAt:Date.now()};phone.hours[10]=500;
 assert.equal((await req('/api/device/sync',{method:'POST',data:phone})).status,401);
 assert.equal((await req('/api/device/sync',{method:'POST',token:t,data:phone})).status,200);
@@ -62,4 +66,4 @@ await req('/api/auth/logout',{method:'POST',token:change.body.token,data:{}});as
 assert.notEqual(tables.df_accounts[0].password_hash,'new-test-password-123');assert.equal(tables.df_accounts[0].password_hash.length,64);
 for(let n=0;n<11;n++)await req('/api/auth/login',{method:'POST',data:{username:'test_missing',password:'incorrect-test-password'}});
 assert.equal((await req('/api/auth/login',{method:'POST',data:{username:'test_missing',password:'incorrect-test-password'}})).status,429);
-console.log('PASS: Device sync/upsert/account isolation/invalid data, routine and journal round-trip, invalid routine rejection, invalid feature rejection, backward compatibility, CORS restriction, username/password registration/login, hashed credentials, session isolation/revocation, per-user persistence, input validation, concurrency conflict, password change and rate limiting. Mock REST only; live smoke test still required.');
+console.log('PASS: Password-free device sessions and isolation, device sync/upsert/account isolation/invalid data, routine and journal round-trip, invalid routine rejection, invalid feature rejection, backward compatibility, CORS restriction, legacy username/password compatibility, hashed credentials, session isolation/revocation, per-user persistence, input validation, concurrency conflict, password change and rate limiting. Mock REST only; live smoke test still required.');
