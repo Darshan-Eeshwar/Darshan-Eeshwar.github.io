@@ -164,9 +164,6 @@
     updateHandoff();
     input.focus();
   });
-  root.addEventListener('keydown', event => {
-    if (event.key === 'Escape' && !panel.hidden) { event.preventDefault(); toggle(false); }
-  });
   showMode(Boolean(endpoint));
   addMessage('assistant', greeting);
   updateHandoff();

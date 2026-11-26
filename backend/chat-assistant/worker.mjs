@@ -45,8 +45,6 @@ export default {
       if (!Array.isArray(messages) || !messages.length || messages.length > 12 || messages.at(-1)?.role !== 'user' || messages.some(message => !message || !['user', 'assistant'].includes(message.role) || typeof message.content !== 'string' || !message.content.trim() || message.content.length > 6000 || (message.role === 'user' && message.content.length > 1000))) {
         return reply({ error: 'Invalid messages' }, 400);
       }
-      const limit = await env.CHAT_RATE_LIMITER.limit({ key: 'public-assistant' });
-      if (!limit.success) return reply({ error: 'Please try again later' }, 429);
       const response = await fetch('https://api.openai.com/v1/responses', {
         method: 'POST',
         headers: { 'Authorization': 'Bearer ' + env.OPENAI_API_KEY, 'Content-Type': 'application/json' },
