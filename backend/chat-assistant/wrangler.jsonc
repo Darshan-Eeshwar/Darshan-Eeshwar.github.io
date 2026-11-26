@@ -1,0 +1,16 @@
+{
+  "name": "dimple-chat-assistant",
+  "main": "worker.mjs",
+  "compatibility_date": "2026-11-26",
+  "vars": {
+    "ALLOWED_ORIGINS": "https://darshan-eeshwar.github.io",
+    "OPENAI_MODEL": "gpt-4.1-mini"
+  },
+  "ratelimits": [
+    {
+      "name": "CHAT_RATE_LIMITER",
+      "namespace_id": "2026112601",
+      "simple": { "limit": 30, "period": 60 }
+    }
+  ]
+}
